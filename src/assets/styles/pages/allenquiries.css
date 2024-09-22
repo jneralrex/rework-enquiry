@@ -1,0 +1,145 @@
+* {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  margin: auto;
+  max-width: 100%;
+  max-height: 100vh;
+}
+
+.header-container {
+  display: flex;
+  margin-bottom: 30px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header-left {
+  border-right: 1px solid grey;
+  display: flex;
+  align-items: center;
+  width: 90%;
+  justify-content: space-between;
+  padding: 1px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  width: 20%;
+  justify-content: center;
+  gap: 10px;
+}
+
+.icon-group {
+  display: flex;
+  width: 10%;
+  justify-content: space-around;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  gap: 10px;
+}
+
+.custom-card {
+  width: 180px;
+  text-align: center;
+  height: 100px;
+  border-radius: 10px;
+}
+
+.card-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: grey;
+  width: 100%;
+}
+
+.card-number {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+
+.button-group {
+  display: flex;
+  gap: 20px;
+  justify-content: right;
+  margin: 20px;
+}
+
+.custom-button {
+  display: flex;
+  align-items: center;
+  width: 100px;
+  border: 1px solid;
+  justify-content: space-around;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #00afef;
+  color: white;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.table-drop-down {
+  background-color: inherit !important;
+  width: 100% !important;
+
+}
+
+.table-drop-down-title {
+  width: 100% !important;
+  margin-left: 1px !important;
+  font-weight: 400 !important;
+  font-size: 13px !important;
+}
+
+.drop-down-menu {
+  margin-top: 5px !important;
+  margin-left: -11px !important;
+  text-align: center !important;
+  font-size: 11px !important;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.next-page-pointer {
+  display: flex;
+  height: 30px;
+  width: 80px;
+  margin-top: -10px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.page-button {
+  margin-top: 20px;
+  margin-left: 15px;
+  margin-bottom: 30px;
+  padding: 2px;
+}
+
+.active {
+  color: white;
+  background-color: #00afef;
+}

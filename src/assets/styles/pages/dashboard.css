@@ -1,0 +1,212 @@
+*{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-container {
+    margin: auto;
+    max-width: 100%;
+    max-height: 100vh;
+}
+
+.dashboard-header {
+  display: flex;
+  margin-bottom: 30px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dashboard-header-left {
+  border-right: 1px solid grey;
+  display: flex;
+  align-items: center;
+  width: 90%;
+  justify-content: space-between;
+  padding: 1px;
+}
+
+.dashboard-header-right {
+  display: flex;
+  align-items: center;
+  width: 20%;
+  justify-content: center;
+  gap: 10px;
+}
+.header-title {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.header-icons {
+  display: flex;
+  width: 10%;
+  justify-content: space-around;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  gap: 10px;
+}
+
+.dashboard-card {
+  width: 195px;
+  text-align: center;
+  height: 100px !important;
+  border-radius: 10px;
+}
+
+.dashboard-card-body {
+  margin-top: -10px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+
+.card-icon-container {
+  height: 40px;
+  width: 60px;
+  border-radius: 100%;
+  border: 1px solid grey;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.card-title {
+  font-weight: 700;
+  width: 100%;
+  font-size: 12px;
+  color: grey !important;
+}
+
+.card-stat {
+  font-weight: 700;
+  font-size: 15px;
+  margin-top: -25px !important;
+
+}
+
+.card-link {
+  margin-top: -15px !important;
+  display: flex;
+  align-self: left;
+  margin: 10px;
+  gap: 10px;
+  font-size: 12px;
+  color: grey;
+}
+
+.recent-enquiries-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 50px;
+}
+
+.add-button {
+  background-color: #00afef;
+  width: 150px;
+  padding: 2px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.table {
+  /* width: 100% !important; */
+  margin: auto !important;
+  text-align: center;
+}
+
+th {
+  font-size: 13px;
+}
+
+td {
+  font-size: 13px;
+  text-align: center !important;
+  align-content: center;
+}
+
+.table-drop-down {
+  background-color: inherit !important;
+  width: 100% !important;
+
+}
+
+.table-drop-down-title {
+  width: 100% !important;
+  margin-left: 1px !important;
+  font-weight: 400 !important;
+  font-size: 13px !important;
+}
+
+.drop-down-menu {
+  margin-top: 5px !important;
+  margin-left: -11px !important;
+  text-align: center !important;
+  font-size: 11px !important;
+}
+
+.second-enquiries-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 100px;
+  margin: 20px;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.filter-button {
+  background-color: #00afef;
+  width: 100px;
+  padding: 2px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: white;
+}
+
+.header-title-bold {
+  font-weight: 700;
+}
+
+.header-title-bold2{
+  font-weight: 700;
+  width: 40%;
+  text-align: center;
+}
+
+.second-table{
+display: flex;
+width: 100%;
+
+}
+
+.table2 {
+  width: 50% !important;
+  text-align: center;
+  margin-left: 0px !important;
+}
+
+.pie-holder{
+  display: flex;
+  width: 40%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pie-chart{
+  border:1px solid;
+  height: 200px;
+  width: 200px;
+  border-radius: 100px;
+}
