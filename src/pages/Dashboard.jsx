@@ -102,7 +102,7 @@ const Dashboard = () => {
         <Table bordered className="table">
           <thead>
             <tr>
-              <th>Source</th>
+              <th>Sources</th>
               <th>Brief-Description</th>
               <th>Name</th>
               <th>Email</th>
