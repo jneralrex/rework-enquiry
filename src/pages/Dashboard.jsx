@@ -103,7 +103,7 @@ const Dashboard = () => {
           <thead>
             <tr>
               <th>Sources</th>
-              <th>Brief-Description</th>
+              <th>Brief-Descriptions</th>
               <th>Name</th>
               <th>Email</th>
               <th>Status</th>
