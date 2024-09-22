@@ -102,12 +102,12 @@ const Dashboard = () => {
         <Table bordered className="table">
           <thead>
             <tr>
-              <th>Sources</th>
-              <th>Brief-Descriptions</th>
+              <th>Source</th>
+              <th>Brief-Description</th>
               <th>Name</th>
               <th>Email</th>
               <th>Status</th>
-              <th>Follow-Up Actions</th>
+              <th>Follow-Up Action</th>
               <th>Assigned Staff</th>
               <th>Created At</th>
               <th>Actions</th>
