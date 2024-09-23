@@ -7,7 +7,7 @@ import { FiBell, FiSearch, FiPlus, FiFilter, FiArrowRight } from "react-icons/fi
 import { CiExport } from "react-icons/ci";
 import '../assets/styles/pages/allenquiries.css';
 
-const Students = () => {
+const Enquiry = () => {
   const studentsData = Array(50).fill(null).map((_, idx) => ({
     source: "Amazon",
     description: "Entertainment",
@@ -77,8 +77,6 @@ const Students = () => {
     <p className="card-number">5</p>
   </Card>
 </div>
-
-
       <div className="button-group">
         <div className="custom-button">
           <FiPlus size={20} />
@@ -156,4 +154,4 @@ const Students = () => {
   );
 };
 
-export default Students;
+export default Enquiry;

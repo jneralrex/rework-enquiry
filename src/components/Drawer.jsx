@@ -26,25 +26,25 @@ const Drawer = () => {
             <NavLink to='/drawer/dashboard' className={({ isActive }) => isActive ? "link active-link" : "link"}>
               <div><FiHome /></div>Dashboard
             </NavLink>
-            <NavLink to='/drawer/students' className={({ isActive }) => isActive ? "link active-link" : "link"}>
+            <NavLink to='/drawer/enquiry' className={({ isActive }) => isActive ? "link active-link" : "link"}>
               <div><LuUsers /></div>Enquiries
             </NavLink>
             <NavLink to='/drawer/enquiry-details' className={({ isActive }) => isActive ? "link active-link" : "link"}>
               <div><FiBell /></div>Enquiries details
             </NavLink>
-            <NavLink to='/drawer/courses' className={({ isActive }) => isActive ? "link active-link" : "link"}>
+            <NavLink to='/drawer/follow-up' className={({ isActive }) => isActive ? "link active-link" : "link"}>
               <div><FiBook /></div>Follow ups
             </NavLink>
-            <NavLink to='/drawer/projects' className={({ isActive }) => isActive ? "link active-link" : "link"}>
+            <NavLink to='/drawer/customer' className={({ isActive }) => isActive ? "link active-link" : "link"}>
               <div><RiCustomerService2Fill /></div>Customer
             </NavLink>
-            <NavLink to='/drawer/trainers' className={({ isActive }) => isActive ? "link active-link" : "link"}>
+            <NavLink to='/drawer/user-management' className={({ isActive }) => isActive ? "link active-link" : "link"}>
               <div>< HiOutlineShoppingBag/></div>User management
             </NavLink>
             <NavLink to='/drawer/notifications' className={({ isActive }) => isActive ? "link active-link" : "link"}>
               <div><FiBell /></div>Notification
             </NavLink>
-            <NavLink to='/drawer/notifications' className={({ isActive }) => isActive ? "link active-link" : "link"}>
+            <NavLink to='/drawer/report' className={({ isActive }) => isActive ? "link active-link" : "link"}>
               <div><TbReportSearch /></div>Report
             </NavLink>
             

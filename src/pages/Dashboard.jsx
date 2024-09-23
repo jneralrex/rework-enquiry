@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import { LuFileBadge, LuLink, LuLink2, LuUsers } from "react-icons/lu";
-import { FiHome, FiBook, FiCreditCard, FiBell, FiBarChart, FiSearch, FiLink, FiLink2, FiPlus, FiFilter } from "react-icons/fi";
+import { LuLink2, LuUsers } from "react-icons/lu";
+import {  FiBell, FiSearch, FiPlus, FiFilter } from "react-icons/fi";
 import '../assets/styles/pages/dashboard.css';
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
