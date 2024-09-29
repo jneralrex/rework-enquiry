@@ -104,7 +104,8 @@
 .recent-enquiries-header {
   display: flex;
   justify-content: space-between;
-  margin: 20px 50px;
+  margin: 20px 0px;
+  align-items: center;
 }
 
 .add-button {
@@ -172,7 +173,7 @@ td {
 }
 
 .second-enquiries-header {
-  margin: 20px;
+  margin: 20px 0px;
 }
 
 .flex-between {

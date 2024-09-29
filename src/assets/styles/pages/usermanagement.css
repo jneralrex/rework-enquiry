@@ -1,0 +1,148 @@
+/* Container */
+.con {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .header-left {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .title {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  
+  .icon-group {
+    display: flex;
+    width: 10%;
+    justify-content: space-around;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  /* Search and Add */
+  .search-and-add {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    align-items: center;
+    margin-left: auto;
+  }
+  
+  .search-add-group {
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+  }
+  
+  .search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid gray;
+    padding: 6px;
+    border-radius: 10px;
+    margin-left: 50px;
+  }
+  
+  .search-box input {
+    border: none;
+    outline: none;
+  }
+  
+  .add-new-button {
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    background-color: #00afef;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .table-container2 {
+    overflow-x: auto;
+    margin-left: auto;
+  
+  }
+  
+  .table {
+    margin: auto !important;
+    text-align: center;
+    min-width: 900px; 
+  }
+  
+  .table thead th {
+    border: 1px solid black;
+    border-radius: 5px 0px 5px 0px;
+  }
+  
+  .flex-td{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Pagination */
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .next-page-pointer {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .page-button {
+    margin: 0 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+  }
+  
+  .page-button.active {
+    color: white;
+    background-color: #00afef;
+  }
+  
+  @media (max-width: 1024px) {
+      .table {
+        min-width: 800px; 
+      }
+      .table-container {
+        width: 100%;
+        overflow-x: auto;
+      }
+      .search-and-add {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        margin-bottom: 20px;
+        align-items: center;
+      }
+      .search-add-group {
+        display: flex;
+        justify-content: space-between;
+        width: 87%;
+        align-items: center;
+      }
+  }
