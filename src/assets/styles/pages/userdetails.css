@@ -1,0 +1,159 @@
+.details-con {
+    padding: 20px;
+    max-width: 100%;
+    max-height: 100vh;
+  }
+  
+ 
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .icon-group {
+    display: flex;
+    gap: 15px;
+    margin-left: 20px;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .details-grid {
+    width: 80%;
+    margin-left: auto;
+    display: grid;
+    grid-template-columns: 2fr auto;
+    gap: 10px;
+    min-height: 100vh;
+  }
+  
+  .details-container {
+    border: 1px solid #d2d2d2;
+    padding: 20px;
+  }
+  
+  .details-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .details-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .profile-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  
+  .profile-name {
+    font-weight: 500;
+    font-size: 20px;
+  }
+  
+  .profile-role {
+    font-weight: 500;
+    font-size: 16px;
+  }
+  
+  .details-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .details-section {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .label {
+    background-color: aliceblue;
+    font-weight: 700;
+    padding: 5px 0;
+  }
+  
+  .value {
+    font-weight: 500;
+  }
+  
+  .action-container {
+    padding: 20px;
+  }
+  
+  .action-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 50px;
+    height: 50%;
+  }
+  
+  .action-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .delete-item {
+    color: red;
+  }
+  
+
+  @media (max-width: 1024px) {
+    .details-con {
+        max-width: 100%;
+        max-height: 100vh;
+      }
+    .details-grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 2fr auto ;
+        gap: 20px;
+        min-height: 100vh;
+      }
+      .profile-image {
+        width: 180px;
+        height: 160px;
+        object-fit: cover;
+      }
+      
+      .profile-name {
+        font-weight: 700;
+        font-size: 12px;
+      }
+      .profile-role {
+        font-size: 10px;
+      }
+      .action-container {
+        padding: 10px;
+      }
+      .action-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: 100%;
+      }
+      .action-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 50px;
+        height: 50%
+      }
+    
+}

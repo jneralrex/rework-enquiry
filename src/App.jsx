@@ -12,6 +12,7 @@ import EnquiryDetails from "./pages/EnquiryDetails";
 import Followups from "./pages/Followups";
 import Customer from "./pages/Customer";
 import UserManagement from "./pages/UserManagement";
+import UserDetails from "./pages/UserDetails";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
         <Route path='enquiry-details' element={<EnquiryDetails />} />
         <Route path='customer' element={<Customer />} />
         <Route path='user-management' element={<UserManagement />} />
+        <Route path='user-management/user-details' element={<UserDetails />} />
       </Route>
     </Route>
   )

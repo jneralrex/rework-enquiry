@@ -4,7 +4,9 @@ import { LuUsers } from 'react-icons/lu';
 import { IoSearchOutline } from "react-icons/io5";
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
-import '../assets/styles/pages/usermanagement.css';  // Assuming this is the correct path for your CSS file
+import Image from 'react-bootstrap/Image';
+import { Link } from 'react-router-dom';
+import '../assets/styles/pages/usermanagement.css'; 
 
 const UserManagement = () => {
   const studentsData = Array(50).fill(null).map((_, idx) => ({
@@ -12,7 +14,7 @@ const UserManagement = () => {
     role: "",
     email: "idahrex@gmail.com",
     createdAt: "22/24/2023",
-    action: "",
+    action: ""
   }));
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,13 +34,13 @@ const UserManagement = () => {
         <div className="header-left">
           <div className="title">All Enquiries</div>
           <div className="icon-group">
-            <div><FiSearch /></div>
-            <div><FiBell /></div>
+            <div className="icon"><FiSearch /></div>
+            <div className="icon"><FiBell /></div>
           </div>
         </div>
         <div className="header-right">
           <div>Jones Ferdinand</div>
-          <div><LuUsers /></div>
+          <div className="icon"><LuUsers /></div>
         </div>
       </div>
 
@@ -47,7 +49,7 @@ const UserManagement = () => {
         <div className="search-add-group">
           <div className="search-box">
             <input type="text" placeholder='search' />
-            <IoSearchOutline />
+            <IoSearchOutline className="search-icon" />
           </div>
           <button className="add-new-button">
             <FiPlus />
@@ -74,7 +76,12 @@ const UserManagement = () => {
                   <Form>
                     <Form.Check inline name="group1" type="checkbox" id={`inline-checkbox-${idx}`} />
                   </Form>
-                  {student.name}
+                  <div className='flex-td-div'>
+                    <Image src="holder.js/171x180" roundedCircle className="student-image" />
+                    <Link to="user-details" className="student-name">
+                      {student.name}
+                    </Link>
+                  </div>
                 </td>
                 <td>{student.role}</td>
                 <td>{student.email}</td>
@@ -90,7 +97,7 @@ const UserManagement = () => {
       <div className="pagination-controls">
         <div className="next-page-pointer">
           <div>Next</div>
-          <div><FiArrowRight /></div>
+          <div className="icon"><FiArrowRight /></div>
         </div>
         <div>
           {Array(Math.ceil(studentsData.length / itemsPerPage)).fill(null).map((_, idx) => (

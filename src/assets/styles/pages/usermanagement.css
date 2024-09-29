@@ -56,7 +56,6 @@
     border: 1px solid gray;
     padding: 6px;
     border-radius: 10px;
-    /* margin-left: 50px; */
   }
   
   .search-box input {
@@ -94,8 +93,13 @@
   
   .flex-td{
     display: flex;
-    justify-content: center;
     align-items: center;
+    gap: 10px;
+  }
+  .flex-td-div{
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
   
   /* Pagination */
@@ -149,7 +153,7 @@
         justify-content: space-around;
       }
       .add-new-button {
-        padding: 2px;
+        padding: 6px;
         display: flex;
         align-items: center;
         border-radius: 5px;

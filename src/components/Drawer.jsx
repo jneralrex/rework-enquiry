@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { NavLink, Outlet } from 'react-router-dom';
 import { FiHome, FiBook, FiBell } from 'react-icons/fi';
-import { LuUsers } from 'react-icons/lu';
+import { LuLogOut, LuUsers } from 'react-icons/lu';
 import { SlGraph } from 'react-icons/sl';
 import { RiCustomerService2Fill, RiSettings5Line } from 'react-icons/ri';
-import Dropdown from 'react-bootstrap/Dropdown';
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { TbReportSearch } from "react-icons/tb";
 import Button from 'react-bootstrap/Button';
 import { AiOutlineMenu } from 'react-icons/ai';
 import logo from "../assets/images/reworklogo.png";
 import '../assets/styles/components/drawer.css';
+import { BiUserCheck } from "react-icons/bi";
+
 
 const Drawer = () => {
   const [show, setShow] = useState(false);
@@ -69,17 +70,11 @@ const Drawer = () => {
               <TbReportSearch /> Report
             </NavLink>
             <hr className="offcanvas-divider" />
-            <Dropdown>
-              <Dropdown.Toggle id="dropdown-autoclose-true">
-                <RiSettings5Line /> Set-Up
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-                <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
             <NavLink to='/drawer/system-activities' className={({ isActive }) => isActive ? "link active-link" : "link"}>
-              <SlGraph /> System activities
+              <BiUserCheck /> Change password
+            </NavLink>
+            <NavLink to='/drawer/system-activities' className={({ isActive }) => isActive ? "link active-link" : "link"}>
+              <LuLogOut style={{color:"red"}}/> Log out
             </NavLink>
           </Offcanvas.Body>
         </Offcanvas>
