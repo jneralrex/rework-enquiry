@@ -141,7 +141,18 @@
       }
       .search-add-group {
         display: flex;
-        width: 80%;
+        width: 87%;
         align-items: center;
+        margin-right: auto;
+      }
+      .add-new-button {
+        padding: 6px;
+        display: flex;
+        align-items: center;
+        border-radius: 5px;
+        background-color: #00afef;
+        border: none;
+        color: white;
+        cursor: pointer;
       }
   }

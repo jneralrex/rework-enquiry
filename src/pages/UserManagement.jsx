@@ -49,10 +49,10 @@ const UserManagement = () => {
             <input type="text" placeholder='search' />
             <IoSearchOutline />
           </div>
-          <button className="add-new-button">
+          <div className="add-new-button">
             <FiPlus />
-            Add New
-          </button>
+            <div>Add New</div>
+          </div>
         </div>
       </div>
 
