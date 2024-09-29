@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import { FiBell, FiPlus, FiArrowRight, FiSearch, FiTrash } from 'react-icons/fi'
+import { FiBell, FiArrowRight, FiSearch, } from 'react-icons/fi'
 import { LuUsers } from 'react-icons/lu';
-import { IoSearchOutline } from "react-icons/io5";
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
-
+import '../assets/styles/pages/customer.css'
 
 const Customer = () => {
   const studentsData = Array(50).fill(null).map((_, idx) => ({
@@ -46,22 +45,9 @@ const Customer = () => {
       </div>
       <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', paddingRight: '5px', marginBottom: '20px' }}>
         <div>All (100)</div>
-        <div className='' style={{ display: 'flex', gap: '8px', width: '40%', }}>
-          <div style={{ border: '1px solid gray', display: 'flex', alignItems: 'center', padding: '6px', borderRadius: '10px' }}>
-            <input type="text" placeholder='search' style={{ border: 'none', }} />
-            <IoSearchOutline />
-          </div>
-          <button style={{ padding: '6px', display: 'flex', alignItems: 'center', borderRadius: '5px', backgroundColor: '#00afef', border: 'none', color: 'white' }}>
-            <FiPlus />
-            Add New
-          </button>
-          <button style={{ padding: '6px', display: 'flex', alignItems: 'center', borderRadius: '5px', backgroundColor: '#ff8a8a', border: 'none', color: 'white' }}>
-            <FiTrash />
-            Delete
-          </button>
-        </div>
+       
       </div>
-
+      <div className='table-container'>
       <Table className="table">
         <thead style={{ border: '1px solid black', borderRadius: '5px 0px 5px 0px' }}>
           <tr>
@@ -103,6 +89,7 @@ const Customer = () => {
           ))}
         </tbody>
       </Table>
+      </div>
 
       {/* Pagination Controls */}
       <div className="pagination-controls">

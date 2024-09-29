@@ -5,10 +5,9 @@
   box-sizing: border-box;
 }
 
-.container {
-  margin: auto;
-  max-width: 100%;
-  max-height: 100vh;
+.con {
+  width: 100%;
+  min-height: 100vh;
 }
 
 .header-container {
@@ -22,7 +21,7 @@
   border-right: 1px solid grey;
   display: flex;
   align-items: center;
-  width: 90%;
+  width: 100%;
   justify-content: space-between;
   padding: 1px;
 }
@@ -42,9 +41,10 @@
 }
 
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(6, auto);
-  gap: 10px;
+  display: flex;
+  margin-left: auto;
+  width: 80%;
+  justify-content: space-between;
 }
 
 .custom-card {
@@ -93,8 +93,10 @@
   color: white;
 }
 
-.table {
-  margin-top: 20px;
+.table-container {
+  width: 80%;
+  overflow-x: auto; 
+  margin-left: auto;
 }
 
 .table-drop-down {
@@ -142,4 +144,27 @@
 .active {
   color: white;
   background-color: #00afef;
+}
+
+@media (max-width: 1024px) {
+  .card-grid {
+    display: flex;
+    flex-direction: row; 
+    overflow-x: auto; 
+    white-space: nowrap;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .custom-card {
+    flex-shrink: 0; 
+  }
+    .table {
+      min-width: 800px; 
+    }
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+  
 }

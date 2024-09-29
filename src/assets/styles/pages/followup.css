@@ -10,14 +10,15 @@
     max-height: 100vh;
 }
 
-.table-area {
-    margin-right: 20px;
-}
+.table {
+    min-width: 800px; 
+  }
 
-.follow-table {
-    text-align: center;
-    width: 100% !important;
-}
+.table-container {
+    width: 80%;
+    overflow-x: auto; 
+    margin-left: auto;
+  }
 
 th {
     font-size: 13px;
@@ -51,4 +52,16 @@ td {
     margin-left: -11px !important;
     text-align: center !important;
     font-size: 11px !important;
+}
+
+@media (max-width: 1024px) {
+
+    .table {
+      min-width: 800px; 
+    }
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+  
 }

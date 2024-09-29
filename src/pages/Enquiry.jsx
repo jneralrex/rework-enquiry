@@ -30,7 +30,7 @@ const Enquiry = () => {
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="container">
+    <div className="con">
       <div className="header-container">
         <div className="header-left">
           <div style={{ fontWeight: "700", fontSize: "20px" }}>All Enquiries</div>
@@ -44,39 +44,39 @@ const Enquiry = () => {
           <div><LuUsers /></div>
         </div>
       </div>
-    
+
       <div className="card-grid">
-  <Card className="custom-card">
-    <Card.Body className="card-body">
-      <div className="card-title">New</div>
-    </Card.Body>
-    <p className="card-number">567</p>
-  </Card>
-  <Card className="custom-card">
-    <Card.Body className="card-body">
-      <div className="card-title">In-progress</div>
-    </Card.Body>
-    <p className="card-number">20</p>
-  </Card>
-  <Card className="custom-card">
-    <Card.Body className="card-body">
-      <div className="card-title">Enrolled</div>
-    </Card.Body>
-    <p className="card-number">120</p>
-  </Card>
-  <Card className="custom-card">
-    <Card.Body className="card-body">
-      <div className="card-title">OPt-out</div>
-    </Card.Body>
-    <p className="card-number">10</p>
-  </Card>
-  <Card className="custom-card">
-    <Card.Body className="card-body">
-      <div className="card-title">Closed</div>
-    </Card.Body>
-    <p className="card-number">5</p>
-  </Card>
-</div>
+        <Card className="custom-card">
+          <Card.Body className="card-body">
+            <div className="card-title">New</div>
+          </Card.Body>
+          <p className="card-number">567</p>
+        </Card>
+        <Card className="custom-card">
+          <Card.Body className="card-body">
+            <div className="card-title">In-progress</div>
+          </Card.Body>
+          <p className="card-number">20</p>
+        </Card>
+        <Card className="custom-card">
+          <Card.Body className="card-body">
+            <div className="card-title">Enrolled</div>
+          </Card.Body>
+          <p className="card-number">120</p>
+        </Card>
+        <Card className="custom-card">
+          <Card.Body className="card-body">
+            <div className="card-title">OPt-out</div>
+          </Card.Body>
+          <p className="card-number">10</p>
+        </Card>
+        <Card className="custom-card">
+          <Card.Body className="card-body">
+            <div className="card-title">Closed</div>
+          </Card.Body>
+          <p className="card-number">5</p>
+        </Card>
+      </div>
       <div className="button-group">
         <div className="custom-button">
           <FiPlus size={20} />
@@ -93,6 +93,7 @@ const Enquiry = () => {
       </div>
 
       {/* Table with manual pagination */}
+      <div className="table-container">
       <Table bordered className="table">
         <thead>
           <tr>
@@ -115,40 +116,41 @@ const Enquiry = () => {
               <td>{student.staff}</td>
               <td>{student.date}</td>
               <td>
-              <Dropdown className="table-drop-down">
-              <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                  view 
-                </Dropdown.Toggle>
+                <Dropdown className="table-drop-down">
+                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
+                    view
+                  </Dropdown.Toggle>
 
-                <Dropdown.Menu className="drop-down-menu">
-                  <Dropdown.Item href="#/action-1">view</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">edit</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">delete</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+                  <Dropdown.Menu className="drop-down-menu">
+                    <Dropdown.Item href="#/action-1">view</Dropdown.Item>
+                    <Dropdown.Item href="#/action-2">edit</Dropdown.Item>
+                    <Dropdown.Item href="#/action-3">delete</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
+      </div>
 
       {/* Pagination Controls */}
       <div className="pagination-controls">
         <div className="next-page-pointer">
           <div>Next</div>
-          <div><FiArrowRight/></div>
+          <div><FiArrowRight /></div>
         </div>
-       <div>
-       {Array(Math.ceil(studentsData.length / itemsPerPage)).fill(null).map((_, idx) => (
-          <button
-            key={idx}
-            className={`page-button ${currentPage === idx + 1 ? 'active' : ''}`}
-            onClick={() => handlePageChange(idx + 1)}
-          >
-            {idx + 1}
-          </button>
-        ))}
-       </div>
+        <div>
+          {Array(Math.ceil(studentsData.length / itemsPerPage)).fill(null).map((_, idx) => (
+            <button
+              key={idx}
+              className={`page-button ${currentPage === idx + 1 ? 'active' : ''}`}
+              onClick={() => handlePageChange(idx + 1)}
+            >
+              {idx + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

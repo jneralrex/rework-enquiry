@@ -24,8 +24,9 @@ const Followups = () => {
           <div><LuUsers /></div>
         </div>
       </div>
-    <div className="table-area">
-    <Table bordered className="follow-table">
+      
+    <div className="table-container">
+    <Table bordered className="table">
           <thead>
             <tr>
               <th>Name</th>

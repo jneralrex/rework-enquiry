@@ -1,0 +1,23 @@
+.table {
+    min-width: 800px; 
+  }
+.page-button{
+    border:none;
+    color: black;
+}
+.table-container {
+    width: 80%;
+    overflow-x: auto; 
+    margin-left: auto;
+  }
+@media (max-width: 1024px) {
+
+      .table {
+        min-width: 800px; 
+      }
+      .table-container {
+        width: 100%;
+        overflow-x: auto;
+      }
+    
+  }

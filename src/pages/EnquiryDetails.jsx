@@ -92,10 +92,6 @@ const EnquiryDetails = () => {
               <div className='tag'>phone:</div>
               <div className='value'>08175304512</div>
             </div>
-            <div className='staff-and-customer-details'>
-              <div className='tag'>address:</div>
-              <div className='value'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ducimus?</div>
-            </div>
           </div>
         </div>
         <div>

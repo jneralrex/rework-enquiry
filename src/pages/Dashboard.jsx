@@ -95,10 +95,10 @@ const Dashboard = () => {
         <div className="recent-enquiries-header">
           <div className="header-title-bold">Recent Enquiries</div>
           <div className="add-button">
-            <FiPlus size={20} style={{ color: "white" }} />
+            <FiPlus size={20} style={{ color: "white" }} /> Add Enquiry
           </div>
         </div>
-
+        <div className="table-container">
         <Table bordered className="table">
           <thead>
             <tr>
@@ -221,7 +221,7 @@ const Dashboard = () => {
             </tr>
           </tbody>
         </Table>
-
+      </div>
         <div className="second-enquiries-header">
           <div className="flex-between">
             <div className="header-title-bold">Recent Enquiries</div>
@@ -229,10 +229,11 @@ const Dashboard = () => {
               <FiFilter size={20} style={{ color: "white" }} /> <div>Filter</div>
             </div>
           </div>
-          <div className="header-title-bold2">Enquiries by Source</div>
         </div>
 
         <div className="second-table">
+        <div className="table-container2">
+
           <Table bordered className="table2">
             <thead>
               <tr>
@@ -280,14 +281,13 @@ const Dashboard = () => {
               </tr>
             </tbody>
           </Table>
-
-
+          </div>
 
           <div className="pie-holder">
+          <div className="header-title-bold2">Enquiries by Source</div>
             <div className="pie-chart"></div>
           </div>
         </div>
-
       </div>
 
     </>

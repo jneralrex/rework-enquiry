@@ -32,6 +32,7 @@
 
 .offcanvas-logo {
   margin-top: -20px;
+  height: 50px;
 }
 
 .offcanvas-role {
@@ -90,17 +91,46 @@
 
 .drawer-main {
   padding-top: 10px;
-  max-height: 100vh;
-  width: 80%;
-  right: 0;
+  min-height: 100vh;
+  width: 100%;
+ right: 0;
   top: 0;
   bottom: 0;
 }
 
-.offcanva-holder {
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 18%;
-  margin-right: 50px;
+
+.hamburger-btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  display: none;
+}
+
+@media (max-width: 1024px){
+  .hamburger-btn {
+    display: none;
+  }
+  .offcanva-holder {
+    width: 18%;
+    }
+  .drawer-main {
+    padding: 10px;
+    max-height: 100vh;
+    width: 100%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    min-height: 100vh;
+
+  }
+
+  .drawer-offcanvas {
+    position: fixed;
+    z-index: 1030;
+  }
+
+  .desktop {
+    display: none;
+  }
 }
