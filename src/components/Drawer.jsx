@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { NavLink, Outlet } from 'react-router-dom';
-import { FiHome, FiBook, FiBell } from 'react-icons/fi';
+import { FiHome, FiBook, FiBell, FiSearch, FiUser } from 'react-icons/fi';
 import { LuLogOut, LuUsers } from 'react-icons/lu';
 import { SlGraph } from 'react-icons/sl';
 import { RiCustomerService2Fill, RiSettings5Line } from 'react-icons/ri';
@@ -16,13 +16,13 @@ import { BiUserCheck } from "react-icons/bi";
 
 const Drawer = () => {
   const [show, setShow] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1440);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleResize = () => {
-    setIsDesktop(window.innerWidth >= 1024);
+    setIsDesktop(window.innerWidth >= 1440);
   };
 
   useEffect(() => {
@@ -31,13 +31,8 @@ const Drawer = () => {
   }, []);
 
   return (
+    
     <div className="drawer-container">
-      {!isDesktop && (
-        <Button variant="primary" onClick={handleShow} className="hamburger-btn">
-          <AiOutlineMenu size={24} />
-        </Button>
-      )}
-
       <div className={`offcanva-holder ${isDesktop ? 'desktop' : ''}`}>
         <Offcanvas show={isDesktop || show} onHide={handleClose} style={{ width: '250px' }} className="drawer-offcanvas" backdrop={false}>
           <Offcanvas.Header closeButton={!isDesktop}>
@@ -79,6 +74,28 @@ const Drawer = () => {
           </Offcanvas.Body>
         </Offcanvas>
       </div>
+      <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', position:'fixed', zIndex:'99', marginBottom:'20px', backgroundColor:'white', padding:'2px', boxShadow:'1px 0px 4px 0px grey'}}>
+      {!isDesktop && (
+        <Button variant="" onClick={handleShow} className="hamburger-btn">
+          <AiOutlineMenu size={24} />
+        </Button>
+      )}
+          <div>Dashboard</div>
+          <div style={{ border: '1px solid grey', width: '25%', display: 'flex', borderRadius: '10px', alignItems: 'center', justifyContent: 'space-around', padding: '5px', zIndex: '10' }}>
+            <input type="text" placeholder='search' style={{ outline: 'none', border: 'none', width: '90%', zIndex: '10' }} />
+            <FiSearch />
+          </div>
+
+          <div><FiBell /></div>
+
+          <div style={{ border: '1px solid grey', display: 'flex', alignItems: 'center', justifyContent: 'space-around', zIndex: '10', borderRadius:'3px' }}>
+            <FiUser />
+            <select name="" id="" style={{ border: 'none', outline: 'none', zIndex: '10' }}>
+              <option value=""></option>
+              <option value="">Log out</option>
+            </select>
+          </div>
+        </div>
 
       <main className="drawer-main">
         <Outlet />

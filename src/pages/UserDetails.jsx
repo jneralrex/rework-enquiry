@@ -21,25 +21,6 @@ const UserDetails = () => {
 
     return (
         <div className="details-con">
-            <div className="header-container">
-                <div className="header-left">
-                    <div className="title">User Details</div>
-                    <div className="icon-group">
-                        <div>
-                            <FiSearch />
-                        </div>
-                        <div>
-                            <FiBell />
-                        </div>
-                    </div>
-                </div>
-                <div className="header-right">
-                    <div>Jones Ferdinand</div>
-                    <div>
-                        <LuUsers />
-                    </div>
-                </div>
-            </div>
             <div className="details-grid">
                 <Container className="details-container">
                     <div className="details-content">

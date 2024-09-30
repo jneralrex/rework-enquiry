@@ -30,19 +30,7 @@ const Customer = () => {
 
   return (
     <div className="followup-container">
-      <div className="enquiry-header">
-        <div className="enquiry-header-left">
-          <div className="header-title">Follow-ups</div>
-          <div className="header-icons">
-            <div><FiSearch /></div>
-            <div><FiBell /></div>
-          </div>
-        </div>
-        <div className="enquiry-header-right">
-          <div>Jones Ferdinand</div>
-          <div><LuUsers /></div>
-        </div>
-      </div>
+     
       <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', paddingRight: '5px', marginBottom: '20px' }}>
         <div>All (100)</div>
        

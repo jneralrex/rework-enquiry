@@ -30,19 +30,6 @@ const UserManagement = () => {
 
   return (
     <div className="con">
-      <div className="header-container">
-        <div className="header-left">
-          <div className="title">All Enquiries</div>
-          <div className="icon-group">
-            <div className="icon"><FiSearch /></div>
-            <div className="icon"><FiBell /></div>
-          </div>
-        </div>
-        <div className="header-right">
-          <div>Jones Ferdinand</div>
-          <div className="icon"><LuUsers /></div>
-        </div>
-      </div>
 
       <div className="search-and-add">
         <div>All (100)</div>

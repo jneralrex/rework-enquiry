@@ -49,7 +49,7 @@
   grid-template-columns: auto auto auto auto auto;
   margin-left: auto;
   justify-content: space-between;
-  width: 80%;
+  width: 100%;
 }
 
 .dashboard-card {
@@ -121,15 +121,15 @@
 }
 
 .table-container {
-  width: 80%;
+  width: 100%;
   overflow-x: auto; 
   margin-left: auto;
 }
 
 .table-container2 {
-  overflow-x: auto;
-  margin-left: auto;
-
+  margin-right: auto;
+  background: #000;
+  width: 80%;
 }
 
 .table {
@@ -140,7 +140,7 @@
 .table2 {
   margin: auto !important;
   text-align: center;
-  width: 20%;
+  width: 100%;
 }
 th {
   font-size: 13px;
@@ -178,8 +178,7 @@ td {
 
 .flex-between {
   display: flex;
-  width: 56%;
-  margin-left: 250px;
+  width: 100%;
   justify-content: space-between;
 }
 
@@ -206,16 +205,15 @@ td {
 .second-table {
   display: flex;
   flex-direction: row; 
-  width: 80%;
-  margin-left: auto;
+  width: 100%;
   align-items: center;
-
+justify-content: space-between;
 }
 
 .pie-holder {
   display: flex;
   flex-direction: column;
-  width: 40%;
+  width: 35%;
   align-items: center;
   justify-content: center;
 }

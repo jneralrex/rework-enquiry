@@ -43,7 +43,7 @@
 .card-grid {
   display: flex;
   margin-left: auto;
-  width: 80%;
+  width: 100%;
   justify-content: space-between;
 }
 
@@ -94,9 +94,9 @@
 }
 
 .table-container {
-  width: 80%;
+  width: 100%;
   overflow-x: auto; 
-  margin-left: auto;
+  /* margin-left: auto; */
 }
 
 .table-drop-down {

@@ -101,9 +101,8 @@
 }
  .staff-and-customer{
   display: flex;
-  max-width: 70%;
+  max-width: 100%;
   justify-content: space-between;
-  gap: 200px;
   margin-bottom: 20px;
  }
 
@@ -113,10 +112,6 @@
   margin-bottom: 20px;
  }
 
- .staff-and-customer-details{
-  display: flex;
-  gap: 10px;
- }
  .details{
   display: flex;
   flex-direction: column;
@@ -136,7 +131,7 @@
   font-weight: 700;
 }
 .form-area{
-  max-width: 60%;
+  max-width: 50%;
   margin-bottom: 20px;
 }
 .form-group{
@@ -152,60 +147,43 @@
 .progress-and-message{
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .message-box{
-  width: 70%;
+  width: 50%;
   display: flex;
   border-radius: 10px;
   flex-direction: column;
 }
 
 .message-header{
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid grey;
-  border-radius: 10px 10px 0px 0px ;
-  border-bottom: 0;
-  padding-bottom: 10px;
+  width: 400px;
+  text-align: center;
+  font-weight: 700;
 }
 .header{
-  width: 300px;
   text-align: center;
   margin-top: 10px;
-  margin-bottom: 10px;
   font-weight: 700;
 }
 .message-body{
   display: flex;
   justify-content: space-between;
 }
-.message-body{
-  border: 1px solid grey;
-  padding: 10px;
-  border-radius: 10px ;
-}
+
 
 .message-details{
-  width: 300px;
+  width: 400px;
   text-align: center;
 }
 
-.progress-tracker{
-  width: 30%;
-  border: 1px solid;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  padding: 15px;
-}
 .tracking{
   display: flex;
   flex-direction: column;
   gap: 10px;
   align-items: center;
-  /* justify-content: space-evenly; */
 }
+
 .tracker{
   text-align: center;
 }
@@ -244,4 +222,46 @@
 .modal-main{
   display: flex !important;
   align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .progress-and-message{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  } 
+  .message-box{
+    width: 100%;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+  }
+ 
+   .staff-and-customer{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    gap: 50px;
+   }
+   .form-area{
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+  .actions-btns {
+    display: flex;
+    justify-content: space-around;
+    overflow: auto;
+  }
+  .actions-btns>button {
+    background-color: #00afef;
+    border: none;
+    margin: 5px;
+    border-radius: 10px;
+    font-weight: 500;
+    width: 200px;
+    height: 50px;
+    font-size: 10px;
+  }
 }

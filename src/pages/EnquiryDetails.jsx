@@ -10,6 +10,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 
 
@@ -50,19 +51,7 @@ const EnquiryDetails = () => {
 
   return (
     <div className="enquiry-container">
-      <div className="enquiry-header">
-        <div className="enquiry-header-left">
-          <div className="header-title">Enquiry Details</div>
-          <div className="header-icons">
-            <div><FiSearch /></div>
-            <div><FiBell /></div>
-          </div>
-        </div>
-        <div className="enquiry-header-right">
-          <div>Jones Ferdinand</div>
-          <div><LuUsers /></div>
-        </div>
-      </div>
+     
       <div className='header-main'>
         <div className='question-and-details'>
           <div className='question'>What is Full-Stack Development</div>
@@ -95,7 +84,7 @@ const EnquiryDetails = () => {
           </div>
         </div>
         <div>
-          <div className='staff-and-customer-header'>Current Staff Details</div>
+          <div className='staff-and-customer-header'>Customer Details</div>
           <div className='details'>
             <div className='staff-and-customer-details'>
               <div className='tag'>name:</div>
@@ -140,29 +129,33 @@ const EnquiryDetails = () => {
         </Form>
       </div>
       <div className='progress-and-message'>
-        <div className='message-box'>
-          <div className="message-header">
-            <div className='header'>Current staff</div>
-            <div className='header'>Follow up message</div>
-          </div>
-          <div className="message-body">
-            <div className='message-details'>Sam Adahi</div>
-            <div className='message-details'>Lorem ipsum dolor sit amet.</div>
-
-          </div>
-          <div className="message-body">
-            <div className='message-details'>Emmanuuel Ajimobi</div>
-            <div className='message-details'>Lorem ipsum dolor sit amet.</div>
-          </div>
-          <div className="message-body">
-            <div className='message-details'>Juliet Bigtin</div>
-            <div className='message-details'>Lorem ipsum dolor sit amet.</div>
-          </div>
-          <div className="message-body">
-            <div className='message-details'>Juliet Bigtin</div>
-            <div className='message-details'>Lorem ipsum dolor sit amet.</div>
-          </div>
+    <ListGroup className='message-box'>
+      <ListGroup.Item >
+        <div style={{display:'', justifyContent:'space-between'}} className='message-body'> 
+          <div className='message-header'>Current staff</div> 
+          <div className='message-header'>Follow up message</div>
         </div>
+      </ListGroup.Item>
+      <ListGroup.Item>
+      <div style={{display:'flex', justifyContent:'space-between'}}> 
+          <div className='message-details'>Sam Adahi</div> 
+          <div className='message-details'>What is the price for it?</div>
+      </div>
+      </ListGroup.Item>
+      <ListGroup.Item>
+      <div style={{display:'flex', justifyContent:'space-between'}}> 
+          <div className='message-details'>Emmmanuel Ajimobi</div> 
+          <div className='message-details'>Lorem ipsum dolor sit amet.</div>
+      </div>
+      </ListGroup.Item>
+      <ListGroup.Item>
+      <div style={{display:'flex', justifyContent:'space-between'}}> 
+          <div className='message-details'>Lamea Grass</div> 
+          <div className='message-details'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, nostrum!</div>
+      </div>
+        </ListGroup.Item>
+    </ListGroup>
+
         <div className="tracking">
           <div className='header'>Tracking</div>
           <div className="tracker">

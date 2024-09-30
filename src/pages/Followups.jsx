@@ -11,19 +11,6 @@ import {
 const Followups = () => {
   return (
     <div className="followup-container">
-    <div className="enquiry-header">
-        <div className="enquiry-header-left">
-          <div className="header-title">Follow-ups</div>
-          <div className="header-icons">
-            <div><FiSearch /></div>
-            <div><FiBell /></div>
-          </div>
-        </div>
-        <div className="enquiry-header-right">
-          <div>Jones Ferdinand</div>
-          <div><LuUsers /></div>
-        </div>
-      </div>
       
     <div className="table-container">
     <Table bordered className="table">

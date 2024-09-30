@@ -31,19 +31,6 @@ const Enquiry = () => {
 
   return (
     <div className="con">
-      <div className="header-container">
-        <div className="header-left">
-          <div style={{ fontWeight: "700", fontSize: "20px" }}>All Enquiries</div>
-          <div className="icon-group">
-            <div><FiSearch /></div>
-            <div><FiBell /></div>
-          </div>
-        </div>
-        <div className="header-right">
-          <div>Jones Ferdinand</div>
-          <div><LuUsers /></div>
-        </div>
-      </div>
 
       <div className="card-grid">
         <Card className="custom-card">

@@ -6,9 +6,9 @@
     color: black;
 }
 .table-container {
-    width: 80%;
+    width: 100%;
     overflow-x: auto; 
-    margin-left: auto;
+    /* margin-left: auto; */
   }
 @media (max-width: 1024px) {
 
