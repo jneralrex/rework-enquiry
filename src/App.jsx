@@ -2,17 +2,17 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
-  RouterProvider,
-} from "react-router-dom";
-import Login from "./authentication/Login";
-import Drawer from "./components/Drawer";
-import Dashboard from "./pages/Dashboard";
-import Enquiry from "./pages/Enquiry";
-import EnquiryDetails from "./pages/EnquiryDetails";
-import Followups from "./pages/Followups";
-import Customer from "./pages/Customer";
-import UserManagement from "./pages/UserManagement";
-import UserDetails from "./pages/UserDetails";
+  RouterProvider
+} from 'react-router-dom'
+import Login from './authentication/Login'
+import Drawer from './components/Drawer'
+import Dashboard from './pages/Dashboard'
+import Enquiry from './pages/Enquiry'
+import EnquiryDetails from './pages/EnquiryDetails'
+import Followups from './pages/Followups'
+import Customer from './pages/Customer'
+import UserManagement from './pages/UserManagement'
+import UserDetails from './pages/UserDetails'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,12 +29,10 @@ const router = createBrowserRouter(
       </Route>
     </Route>
   )
-);
+)
 
 const App = () => {
-  return (
-    <RouterProvider router={router} />
-  );
-};
+  return <RouterProvider router={router} />
+}
 
-export default App;
+export default App

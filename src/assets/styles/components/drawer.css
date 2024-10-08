@@ -17,6 +17,12 @@
   align-items: center;
 }
 
+.desktopDrawer{
+  padding-top:30px !important;
+  border-right:2px solid #eaeaea;
+  
+}
+
 .offcanvas-header {
   width: 100%;
   text-align: center;
@@ -89,21 +95,19 @@
 }
 
 .drawer-main {
-  margin-top: 40px;
+ 
   min-height: 100vh;
   width: 100%;
-  padding: 20px;
-  position: absolute;
+ 
+ 
 }
 
-
-.hamburger-btn {
-background-color: #00afef !important;
-color: white !important;
-}
 
 @media (max-width: 1024px){
   .hamburger-btn {
+    display: none;
+  }
+  .desktopDrawer{
     display: none;
   }
   .offcanva-holder {
