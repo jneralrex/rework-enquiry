@@ -15,6 +15,7 @@
   margin-bottom: 30px;
   justify-content: space-between;
   width: 100%;
+
 }
 
 .enquiry-header-left {
@@ -64,30 +65,15 @@
 .author {
   font-size: 14px;
 }
-
-.actions-btns {
-  display: flex;
-  justify-content: space-around;
-
-}
-
-.actions-btns>button {
-  background-color: #00afef;
-  border: none;
-  margin: 5px;
-  padding: 4px;
-  border-radius: 10px;
-  font-size: 10px;
-  font-weight: 500;
-  width: 120px;
-  height: 50px;
-  font-size: 14px;
+.details-drop{
+  justify-content: left !important;
+  width: 150px !important;
 }
 
 .delete {
   background-color: red !important;
   color: white;
-}
+} 
 
 .description {
   font-size: 25px;
@@ -223,6 +209,56 @@
   display: flex !important;
   align-items: center;
 }
+.dropbtn {
+  position: relative;
+  font-size: 16px;
+  border: none;
+  margin-top: 20px;
+  margin-left: 200px;
+  right: 10px;
+}
+
+.dropdown-enq {
+  position: static;
+  display: inline-block;
+  right: 0;
+
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  max-width: 160px;
+  right: 0;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  color: white;
+  text-decoration: none;
+  display: block;
+  height: 50px;
+  border-radius: 10px;
+  background: #00afef;
+  border: none;
+
+}
+
+.dropdown-content button:hover {
+  color: black;
+}
+
+.dropdown-enq:hover .dropdown-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.dropdown-enq:hover .dropbtn {
+  background-color: none;
+}
 
 @media (max-width: 1024px) {
   .progress-and-message{
@@ -249,19 +285,13 @@
     max-width: 100%;
     margin-bottom: 20px;
   }
-  .actions-btns {
-    display: flex;
-    justify-content: space-around;
-    overflow: auto;
-  }
-  .actions-btns>button {
-    background-color: #00afef;
-    border: none;
-    margin: 5px;
-    border-radius: 10px;
+  .question-and-details {
+    font-size: 30px;
     font-weight: 500;
-    width: 200px;
-    height: 50px;
-    font-size: 10px;
+  }
+  .dropdown-enq {
+    position: fixed;
+    display: inline-block;
+    right: 0;
   }
 }

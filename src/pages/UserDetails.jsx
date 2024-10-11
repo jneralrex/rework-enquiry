@@ -30,9 +30,18 @@ const UserDetails = () => {
                                 roundedCircle
                                 className="profile-image"
                             />
-                            <div>
+                            <div className="details-inner">
+                                <div>
                                 <div className="profile-name">Andrea Barns</div>
                                 <div className="profile-role">Full stack developer</div>
+                                </div>
+                               <div className="action-content">
+                                <div className="action-item" onClick={handleShow}>
+                                    <FiEdit size={30} />
+                                    <div>Edit</div>
+                                </div>
+
+                            </div>
                             </div>
                         </div>
                         <div className="details-body">
@@ -58,24 +67,10 @@ const UserDetails = () => {
                             </div>
                         </div>
                     </div>
+
                 </Container>
                 <Container className="action-container">
-                    <div className="action-content">
-                        <div className="action-item" onClick={handleShow}>
-                            <FiEdit size={30} />
-                            <div>Edit</div>
-                        </div>
-                        <div className="action-item">
-                            <Form>
-                                <Form.Check type="switch" id="custom-switch" size={20} />
-                            </Form>
-                            <div>Change Role</div>
-                        </div>
-                        <div className="action-item delete-item">
-                            <TfiTrash size={30} />
-                            <div>Delete</div>
-                        </div>
-                    </div>
+
                 </Container>
             </div>
             <Modal
@@ -147,7 +142,7 @@ const UserDetails = () => {
                         </Row>
                         <Modal.Footer className='edit-modal-footer'>
                             <Button variant="" className="delete-btn">
-                               <FiTrash/> Delete user
+                                <FiTrash /> Delete user
                             </Button>
                             <div className="btns">
                                 <Button variant="primary" >

@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import { LuLink2, LuUsers } from "react-icons/lu";
-import { FiBell, FiSearch, FiPlus, FiFilter, FiUser } from "react-icons/fi";
+import { FiPlus, FiFilter, FiUser } from "react-icons/fi";
 import '../assets/styles/pages/dashboard.css';
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { RiExchangeBoxLine, } from "react-icons/ri";
+import Modal from 'react-bootstrap/Modal';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Row from 'react-bootstrap/Row';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 const Dashboard = () => {
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <>
       <div className="dashboard-container">
@@ -80,7 +90,7 @@ const Dashboard = () => {
 
         <div className="recent-enquiries-header">
           <div className="header-title-bold">Recent Enquiries</div>
-          <div className="add-button">
+          <div className="add-button"  onClick={handleShow}>
             <FiPlus size={20} style={{ color: "white" }} /> Add Enquiry
           </div>
         </div>
@@ -275,7 +285,186 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+          <Form>
+        <Modal.Header>
+          <Modal.Title>Create Enquiry</Modal.Title>
+        </Modal.Header>
+        <Modal.Body >
+            <div className='modal-form'>
+              <div>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Source</Form.Label>
+                  <Form.Select aria-label="Default select example">
+                    <option></option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </Form.Select>
+                </Form.Group>
 
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    placeholder=""
+                    style={{ height: '100px' }}
+                  />
+                </Form.Group>
+                <div>
+                </div>
+              </div>
+              <div>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Assigned staff</Form.Label>
+                  <Form.Select aria-label="Default select example">
+                    <option></option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </Form.Select>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Follow-up action</Form.Label>
+                  <FloatingLabel controlId="floatingTextarea2" label="">
+                    <Form.Control
+                      as="textarea"
+                      style={{ height: '100px' }}
+                    />
+                  </FloatingLabel>
+                </Form.Group>
+                <div>
+                </div>
+              </div>
+            </div>
+            <Row className="mb-3">
+              {['checkbox'].map((type) => (
+                <div key={`inline-${type}`} className="mb-3">
+                  <Form.Check
+                    inline
+                    label="New"
+                    name="group1"
+                    type={type}
+                    id={`inline-${type}-1`}
+                  />
+                  <Form.Check
+                    inline
+                    label="In-progress"
+                    name="group1"
+                    type={type}
+                    id={`inline-${type}-2`}
+                  />
+                  <Form.Check
+                    inline
+                    label="Enrolled"
+                    name="group1"
+                    type={type}
+                    id={`inline-${type}-3`}
+                  />
+                  <Form.Check
+                    inline
+                    label="Opt-out"
+                    name="group1"
+                    type={type}
+                    id={`inline-${type}-4`}
+                  />
+                </div>
+              ))}
+            </Row>
+            <div className='modal-form'>
+              <div>
+                <Form.Group  md="4" controlId="validationCustom01">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Name"
+                    defaultValue="Mark"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Address</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    placeholder="Leave a comment here"
+                    style={{ height: '100px' }}
+                  />
+                </Form.Group>
+
+                <Form.Group  md="4" controlId="validationCustom01">
+                  <Form.Label>Qurater</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder=""
+                    defaultValue=""
+                  />
+                </Form.Group>
+
+                <div>
+                </div>
+              </div>
+
+              <div>
+                <Form.Group  md="4" controlId="validationCustom01">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="email"
+                    defaultValue="xyz@rework.com"
+                  />
+                </Form.Group>
+
+                <Form.Group  md="4" controlId="validationCustom01">
+                  <Form.Label>phone</Form.Label>
+                  <Form.Control
+                    required
+                    type="tel"
+                    placeholder="+234"
+                    defaultValue="+234"
+                  />
+                </Form.Group>
+
+                <Form.Group  md="4" controlId="validationCustom01">
+                  <Form.Label>Course (optional)</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder=""
+                    defaultValue=""
+                  />
+                </Form.Group>
+
+                <Form.Group  md="4" controlId="validationCustom01">
+                  <Form.Label>Session (optional)</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder=""
+                    defaultValue=""
+                  />
+                </Form.Group>
+                <div>
+                </div>
+              </div>
+            </div>
+        </Modal.Body>
+        <Modal.Footer className='modal-footer'>
+          <Button variant="primary" >
+            save
+          </Button>
+          <Button variant="danger" onClick={handleClose}>cancel</Button>
+        </Modal.Footer>
+          </Form>
+      </Modal>
     </>
   );
 };

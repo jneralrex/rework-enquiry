@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { FiBell, FiSearch } from 'react-icons/fi'
-import { LuUsers } from 'react-icons/lu'
 import '../assets/styles/pages/enquiriesdetails.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -8,10 +6,9 @@ import { Link } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import InputGroup from 'react-bootstrap/InputGroup';
 import ListGroup from 'react-bootstrap/ListGroup';
-
+import Dropdown from 'react-bootstrap/Dropdown';
+import { SlOptionsVertical } from "react-icons/sl";
 
 
 
@@ -51,14 +48,19 @@ const EnquiryDetails = () => {
 
   return (
     <div className="enquiry-container">
-     
       <div className='header-main'>
         <div className='question-and-details'>
-          <div className='question'>What is Full-Stack Development</div>
+          <div className='question'>What is Full-Stack Development Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi perspiciatis distinctio ipsa dicta quis, odit dolor corrupti at velit?</div>
           <div className='author'>Written by a Rework academy staff, Updated on july 26, 2024</div>
         </div>
-        <div className='actions-btns'>
-          <button onClick={handleShow}>Create Enquiry</button><button onClick={handleUpdateShow}>Update status</button><button onClick={handleActionShow}>Update action</button><button className='delete' onClick={handleDeleteShow}>Delete Enquiry</button>
+        <div className="dropdown-enq">
+          <div className="dropbtn"> <SlOptionsVertical size={20} style={{ color: 'black' }} /></div>
+          <div className="dropdown-content">
+            <button onClick={handleShow}>Create Enquiry</button>
+            <button onClick={handleUpdateShow}>Update status</button>
+            <button onClick={handleActionShow}>Update action</button>
+            <button className='delete' onClick={handleDeleteShow}>Delete Enquiry</button>
+          </div>
         </div>
       </div>
       <div className='description'>Description</div>
@@ -66,7 +68,7 @@ const EnquiryDetails = () => {
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa consectetur sequi vitae repellendus in laborum perferendis vel quae, eum, molestias nulla similique placeat dolorum. Quae eos iusto ipsam, provident dolores nostrum, placeat modi corrupti laudantium necessitatibus hic. Non saepe quibusdam, numquam qui earum beatae culpa quia tenetur, amet optio repellat, ipsam quae maiores. Quis, eligendi. Consectetur beatae distinctio ea error neque, vel nulla dolorum non. Placeat odit veniam, velit molestias excepturi exercitationem quisquam ducimus odio id! Ullam beatae, necessitatibus ad facere delectus voluptatum ea quia, laborum dolore, iste nobis sed quam reiciendis in eaque architecto dolor? Ex id sit culpa eos recusandae ea eum, minima nobis consequatur quibusdam vel, autem quis, sunt ducimus voluptas animi! Suscipit in id rerum quos, quidem aliquam animi eaque eius porro, modi explicabo odio exercitationem excepturi velit dolorum! Repudiandae, eum sequi. Facilis, praesentium. Possimus debitis accusantium sit. Aperiam voluptatibus tempora, reiciendis nisi provident delectus ipsum!
       </div>
       <div className='staff-and-customer'>
-        <div>
+        <div className='staff'>
           <div className='staff-and-customer-header'>Current Staff Details</div>
           <div className='details'>
             <div className='staff-and-customer-details'>
@@ -83,7 +85,8 @@ const EnquiryDetails = () => {
             </div>
           </div>
         </div>
-        <div>
+
+        <div className='customer'>
           <div className='staff-and-customer-header'>Customer Details</div>
           <div className='details'>
             <div className='staff-and-customer-details'>
@@ -99,10 +102,6 @@ const EnquiryDetails = () => {
               <div className='value'>08175225016</div>
             </div>
             <div className='staff-and-customer-details'>
-              <div className='tag'>address:</div>
-              <div className='value'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex provident explicabo ipsum odit libero veniam tempora unde enim sit optio.</div>
-            </div>
-            <div className='staff-and-customer-details'>
               <div className='tag'>session:</div>
               <div className='value'>2023/2024</div>
             </div>
@@ -113,6 +112,10 @@ const EnquiryDetails = () => {
             <div className='staff-and-customer-details'>
               <div className='tag'>marketing source:</div>
               <div className='value'>Lydia Jonathan</div>
+            </div>
+            <div className='staff-and-customer-details'>
+              <div className='tag'>address:</div>
+              <div className='value'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex provident explicabo ipsum odit libero veniam tempora unde enim sit optio.</div>
             </div>
           </div>
         </div>
@@ -129,32 +132,32 @@ const EnquiryDetails = () => {
         </Form>
       </div>
       <div className='progress-and-message'>
-    <ListGroup className='message-box'>
-      <ListGroup.Item >
-        <div style={{display:'', justifyContent:'space-between'}} className='message-body'> 
-          <div className='message-header'>Current staff</div> 
-          <div className='message-header'>Follow up message</div>
-        </div>
-      </ListGroup.Item>
-      <ListGroup.Item>
-      <div style={{display:'flex', justifyContent:'space-between'}}> 
-          <div className='message-details'>Sam Adahi</div> 
-          <div className='message-details'>What is the price for it?</div>
-      </div>
-      </ListGroup.Item>
-      <ListGroup.Item>
-      <div style={{display:'flex', justifyContent:'space-between'}}> 
-          <div className='message-details'>Emmmanuel Ajimobi</div> 
-          <div className='message-details'>Lorem ipsum dolor sit amet.</div>
-      </div>
-      </ListGroup.Item>
-      <ListGroup.Item>
-      <div style={{display:'flex', justifyContent:'space-between'}}> 
-          <div className='message-details'>Lamea Grass</div> 
-          <div className='message-details'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, nostrum!</div>
-      </div>
-        </ListGroup.Item>
-    </ListGroup>
+        <ListGroup className='message-box'>
+          <ListGroup.Item >
+            <div style={{ display: '', justifyContent: 'space-between' }} className='message-body'>
+              <div className='message-header'>Current staff</div>
+              <div className='message-header'>Follow up message</div>
+            </div>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div className='message-details'>Sam Adahi</div>
+              <div className='message-details'>What is the price for it?</div>
+            </div>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div className='message-details'>Emmmanuel Ajimobi</div>
+              <div className='message-details'>Lorem ipsum dolor sit amet.</div>
+            </div>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div className='message-details'>Lamea Grass</div>
+              <div className='message-details'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, nostrum!</div>
+            </div>
+          </ListGroup.Item>
+        </ListGroup>
 
         <div className="tracking">
           <div className='header'>Tracking</div>
@@ -183,15 +186,15 @@ const EnquiryDetails = () => {
         backdrop="static"
         keyboard={false}
       >
-          <Form>
-        <Modal.Header>
-          <Modal.Title>Create Enquiry</Modal.Title>
-        </Modal.Header>
-        <Modal.Body >
+        <Form>
+          <Modal.Header>
+            <Modal.Title>Create Enquiry</Modal.Title>
+          </Modal.Header>
+          <Modal.Body >
             <div className='modal-form'>
               <div>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Source</Form.Label>
+                  <Form.Label>Source</Form.Label>
                   <Form.Select aria-label="Default select example">
                     <option></option>
                     <option value="1">One</option>
@@ -201,7 +204,7 @@ const EnquiryDetails = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Description</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Form.Control
                     as="textarea"
                     placeholder=""
@@ -213,7 +216,7 @@ const EnquiryDetails = () => {
               </div>
               <div>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Assigned staff</Form.Label>
+                  <Form.Label>Assigned staff</Form.Label>
                   <Form.Select aria-label="Default select example">
                     <option></option>
                     <option value="1">One</option>
@@ -223,7 +226,7 @@ const EnquiryDetails = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Follow-up action</Form.Label>
+                  <Form.Label>Follow-up action</Form.Label>
                   <FloatingLabel controlId="floatingTextarea2" label="">
                     <Form.Control
                       as="textarea"
@@ -271,7 +274,7 @@ const EnquiryDetails = () => {
             </Row>
             <div className='modal-form'>
               <div>
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Name</Form.Label>
                   <Form.Control
                     required
@@ -282,7 +285,7 @@ const EnquiryDetails = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Address</Form.Label>
+                  <Form.Label>Address</Form.Label>
                   <Form.Control
                     as="textarea"
                     placeholder="Leave a comment here"
@@ -290,7 +293,7 @@ const EnquiryDetails = () => {
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Qurater</Form.Label>
                   <Form.Control
                     required
@@ -305,7 +308,7 @@ const EnquiryDetails = () => {
               </div>
 
               <div>
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
                     required
@@ -315,7 +318,7 @@ const EnquiryDetails = () => {
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>phone</Form.Label>
                   <Form.Control
                     required
@@ -325,7 +328,7 @@ const EnquiryDetails = () => {
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Course (optional)</Form.Label>
                   <Form.Control
                     required
@@ -335,7 +338,7 @@ const EnquiryDetails = () => {
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Session (optional)</Form.Label>
                   <Form.Control
                     required
@@ -348,93 +351,93 @@ const EnquiryDetails = () => {
                 </div>
               </div>
             </div>
-        </Modal.Body>
-        <Modal.Footer className='modal-footer'>
-          <Button variant="primary" >
-            save
-          </Button>
-          <Button variant="danger" onClick={handleClose}>cancel</Button>
-        </Modal.Footer>
-          </Form>
+          </Modal.Body>
+          <Modal.Footer className='modal-footer'>
+            <Button variant="primary" >
+              save
+            </Button>
+            <Button variant="danger" onClick={handleClose}>cancel</Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
 
       <Modal show={showAction} className='modal-main'>
         <Form>
-        <Modal.Header>
-          <Modal.Title>Add follow-up action</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className='update-form-body'>
-          <div className='update-form'>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Modal.Header>
+            <Modal.Title>Add follow-up action</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='update-form-body'>
+            <div className='update-form'>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Select user</Form.Label>
-                  <Form.Select aria-label="Default select example">
-                    <option></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </Form.Select>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Select aria-label="Default select example">
+                  <option></option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Action taken</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    placeholder="type text here"
-                    style={{ height: '100px' }}
-                    />
-                </Form.Group>
-          </div>
-        </Modal.Body>
-        <Modal.Footer className='modal-footer'>
-          <Button variant="primary" >
-            save
-          </Button>
-          <Button variant="danger" onClick={handleActionClose}>cancel</Button>
-        </Modal.Footer>
-         </Form>
+                <Form.Control
+                  as="textarea"
+                  placeholder="type text here"
+                  style={{ height: '100px' }}
+                />
+              </Form.Group>
+            </div>
+          </Modal.Body>
+          <Modal.Footer className='modal-footer'>
+            <Button variant="primary" >
+              save
+            </Button>
+            <Button variant="danger" onClick={handleActionClose}>cancel</Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
 
       <Modal show={showUpdate} className='modal-main'>
         <Form>
-        <Modal.Header>
-          <Modal.Title>Update status</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className='update-form-body'>
-          <div className='update-form'>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Modal.Header>
+            <Modal.Title>Update status</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='update-form-body'>
+            <div className='update-form'>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Select Action</Form.Label>
-                  <Form.Select aria-label="Default select example">
-                    <option></option>
-                    <option value="1">New</option>
-                    <option value="2">In-progress</option>
-                    <option value="3">Enrolled</option>
-                  </Form.Select>
-                </Form.Group>
-          </div>
-        </Modal.Body>
-        <Modal.Footer className='modal-footer'>
-          <Button variant="primary" >
-            save
-          </Button>
-          <Button variant="danger" onClick={handleUpdateClose}>cancel</Button>
-        </Modal.Footer>
-         </Form>
+                <Form.Select aria-label="Default select example">
+                  <option></option>
+                  <option value="1">New</option>
+                  <option value="2">In-progress</option>
+                  <option value="3">Enrolled</option>
+                </Form.Select>
+              </Form.Group>
+            </div>
+          </Modal.Body>
+          <Modal.Footer className='modal-footer'>
+            <Button variant="primary" >
+              save
+            </Button>
+            <Button variant="danger" onClick={handleUpdateClose}>cancel</Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
 
       <Modal show={showDelete} className='modal-main'>
         <Form>
-        <Modal.Header>
-          <Modal.Title>Update status</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className='update-form-body'>
-         <div>Are you sure you want to delete this enquiry?</div>
-        </Modal.Body>
-        <Modal.Footer className='modal-footer'>
-          <Button variant="primary" >
-            save
-          </Button>
-          <Button variant="danger" onClick={handleDeleteClose}>cancel</Button>
-        </Modal.Footer>
-         </Form>
+          <Modal.Header>
+            <Modal.Title>Update status</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='update-form-body'>
+            <div>Are you sure you want to delete this enquiry?</div>
+          </Modal.Body>
+          <Modal.Footer className='modal-footer'>
+            <Button variant="primary" >
+              save
+            </Button>
+            <Button variant="danger" onClick={handleDeleteClose}>cancel</Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </div>
   )

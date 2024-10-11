@@ -44,7 +44,7 @@
   display: flex;
   margin-left: auto;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .custom-card {
