@@ -94,7 +94,7 @@ const EnquiryDetails = () => {
               <div className='value'>Samuel Kings Garba</div>
             </div>
             <div className='staff-and-customer-details'>
-              <div className='tag'>email:</div>
+              <div className='tag'>email</div>
               <div className='value'>samuelkingsgarba@gmail.com</div>
             </div>
             <div className='staff-and-customer-details'>
