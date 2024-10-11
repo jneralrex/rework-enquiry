@@ -183,18 +183,15 @@
     top: 0;
     bottom: 0;
     min-height: 100vh;
-
   }
 
   .drawer-offcanvas {
     position: fixed;
     z-index: 1030;
   }
-
   .desktop {
     display: none;
   }
-  
   .dashBoard-container {
     display: flex;
     justify-content: space-around;
@@ -206,10 +203,6 @@
     border-bottom: 2px solid #eaeaea;
     width: 100%;
     text-align: center;
-  }
-  .dash-title{
-    width: 10%;
-    margin-left: 5px;
   }
 }
 
