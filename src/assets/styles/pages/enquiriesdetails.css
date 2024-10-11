@@ -251,7 +251,6 @@
   position: static;
   display: inline-block;
   right: 0;
-
 }
 
 .dropdown-content {
@@ -336,8 +335,8 @@
   .dropdown-enq .dropbtn{
     position: fixed;
     display: inline-block;
-    right: 0;
     width: 20px;
+    margin-right: 50px;
   }
 
   .staff{
@@ -348,5 +347,18 @@
     max-width: 450px;
     margin-left: 0px;
 
+  }
+  .header-main {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  .dropdown-enq:hover .dropdown-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    margin-right: 50px;
+    margin-top: 50px;
   }
 }

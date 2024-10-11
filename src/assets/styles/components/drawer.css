@@ -197,7 +197,7 @@
   
   .dashBoard-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     z-index: 999;
     margin-bottom: 20px;
@@ -208,8 +208,8 @@
     text-align: center;
   }
   .dash-title{
-    width: 50%;
-    margin-left: 100px;
+    width: 10%;
+    margin-left: 5px;
   }
 }
 
