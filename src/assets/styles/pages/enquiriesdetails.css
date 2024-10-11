@@ -333,10 +333,11 @@
     text-align: start;
   }
   
-  .dropdown-enq {
+  .dropdown-enq .dropbtn{
     position: fixed;
     display: inline-block;
     right: 0;
+    width: 20px;
   }
 
   .staff{

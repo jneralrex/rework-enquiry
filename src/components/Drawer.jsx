@@ -45,9 +45,10 @@ const Drawer = () => {
             </Offcanvas.Header>
             <img src={logo} alt="Rework logo" className="offcanvas-logo" />
             <Offcanvas.Body className="offcanvas-body">
-              <MyNav />
+              <MyNav handleClose={handleClose} /> {/* Pass handleClose to MyNav */}
             </Offcanvas.Body>
           </Offcanvas>
+
         </div>
 
         <div className='dashBoard-container'>
@@ -56,16 +57,14 @@ const Drawer = () => {
               <AiOutlineMenu size={24} />
             </Button>
           )}
-          <div>Dashboard</div>
-          <div className="join" >
-              <div className="dropdown-main">
-                <div className="dropbtn"> <FaUserCircle size={40} style={{ color: 'black' }} /></div>
-                <div className="dropdown-content">
-                  <div>Log out</div>
-                  <div>Forgot password</div>
-                </div>
+          <div className='dash-title'>Dashboard</div>
+            <div className="dropdown-main">
+              <div className="dropbtn"> <FaUserCircle size={40} style={{ color: 'black' }} /></div>
+              <div className="dropdown-content">
+                <div>Log out</div>
+                <div>Forgot password</div>
               </div>
-        </div>
+            </div>
         </div>
 
         <main className="drawer-main">
