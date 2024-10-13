@@ -15,7 +15,6 @@
   margin-bottom: 30px;
   justify-content: space-between;
   width: 100%;
-
 }
 
 .enquiry-header-left {
@@ -105,7 +104,6 @@
 .details {
   display: grid;
   grid-template-columns: auto auto;
-
 }
 
 .staff-and-customer-details {
@@ -136,7 +134,7 @@
 }
 
 .form-area {
-  max-width: 50%;
+  max-width: 61%;
   margin-bottom: 20px;
 }
 
@@ -155,7 +153,7 @@
 
 .progress-and-message {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
 }
 
@@ -183,18 +181,18 @@
   justify-content: space-between;
 }
 
-
 .message-details {
   width: 400px;
   text-align: center;
 }
 
-.tracking {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
+/* .status-bar{
+  max-width: 100% !important;
+} */
+
+/* .tracking {
+ margin-left: 100px;
+} */
 
 .tracker {
   text-align: center;
@@ -226,7 +224,6 @@
   width: 300px;
 }
 
-
 .update-form-body {
   display: flex;
   justify-content: center;
@@ -239,13 +236,10 @@
   align-items: center;
 }
 
-.dropbtn {
+.dropbtn-enq {
   position: relative;
   font-size: 16px;
   border: none;
-  margin-top: 20px;
-  margin-left: 200px;
-  right: 10px;
 }
 
 .dropdown-enq {
@@ -271,7 +265,6 @@
   border-radius: 10px;
   background: #00afef;
   border: none;
-
 }
 
 .dropdown-content button:hover {
@@ -287,6 +280,44 @@
 
 .dropdown-enq:hover .dropbtn {
   background-color: none;
+}
+
+.list-item {
+  display: flex !important;
+  align-items: center;
+  font-size: 12px;
+  justify-content: space-between;
+  border-radius: 10px !important;
+}
+
+.list-items-img {
+  border: 1px solid;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.list-item-name {
+  font-weight: 700;
+}
+
+.middle {
+  display: flex;
+  flex-direction: column;
+  margin-left: 3px;
+}
+
+.list-item-msg {
+  max-width: 500px;
+}
+
+.item-div{
+margin-bottom: 10px;
+}
+
+.time {
+  text-align: right;
 }
 
 @media (max-width: 1024px) {
@@ -311,12 +342,12 @@
     justify-content: space-between;
     gap: 50px;
   }
-  .details{
+  .details {
     display: flex;
     flex-direction: column;
     gap: 5px;
     justify-content: space-between;
-   }
+  }
   .form-area {
     max-width: 100%;
     margin-bottom: 20px;
@@ -332,22 +363,19 @@
     margin-bottom: 20px;
     text-align: start;
   }
-  
-  .dropdown-enq .dropbtn{
-    position: fixed;
+
+  .dropdown-enq {
+    position: static;
     display: inline-block;
-    width: 20px;
-    margin-right: 50px;
+    right: 0;
   }
 
-  .staff{
+  .staff {
     max-width: 400px;
-
   }
-  .customer{
+  .customer {
     max-width: 450px;
     margin-left: 0px;
-
   }
   .header-main {
     display: flex;
@@ -359,6 +387,6 @@
     flex-direction: column;
     justify-content: center;
     gap: 2px;
-    margin-top: 50px;
+    margin-top: 5px;
   }
 }

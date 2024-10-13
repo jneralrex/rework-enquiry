@@ -99,7 +99,6 @@ const Dashboard = () => {
             <thead>
               <tr>
                 <th>Source</th>
-                <th>Brief-Description</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Status</th>
@@ -112,8 +111,7 @@ const Dashboard = () => {
             <tbody>
               <tr>
                 <td>Amazon</td>
-                <td></td>
-                <td>Charles Vermit </td>
+                                <td>Charles Vermit </td>
                 <td>idahrex@gmail.com</td>
                 <td>Pending</td>
                 <td></td>
@@ -133,8 +131,7 @@ const Dashboard = () => {
               </tr>
               <tr>
                 <td>Amazon</td>
-                <td></td>
-                <td>Charles Vermit </td>
+                                <td>Charles Vermit </td>
                 <td>idahrex@gmail.com</td>
                 <td>Pending</td>
                 <td></td>
@@ -154,8 +151,7 @@ const Dashboard = () => {
               </tr>
               <tr>
                 <td>Amazon</td>
-                <td></td>
-                <td>Charles Vermit </td>
+                                <td>Charles Vermit </td>
                 <td>idahrex@gmail.com</td>
                 <td>Pending</td>
                 <td></td>
@@ -175,8 +171,7 @@ const Dashboard = () => {
               </tr>
               <tr>
                 <td>Amazon</td>
-                <td></td>
-                <td>Charles Vermit </td>
+                                <td>Charles Vermit </td>
                 <td>idahrex@gmail.com</td>
                 <td>Pending</td>
                 <td></td>
@@ -196,8 +191,7 @@ const Dashboard = () => {
               </tr>
               <tr>
                 <td>Amazon</td>
-                <td></td>
-                <td>Charles Vermit Anthony </td>
+                                <td>Charles Vermit Anthony </td>
                 <td>idahrex@gmail.com</td>
                 <td>Pending</td>
                 <td></td>

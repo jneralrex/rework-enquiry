@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { SlOptionsVertical } from "react-icons/sl";
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 
 
@@ -45,6 +46,7 @@ const EnquiryDetails = () => {
     setValidated(true);
   };
 
+  const now = 60;
 
   return (
     <div className="enquiry-container">
@@ -54,7 +56,7 @@ const EnquiryDetails = () => {
           <div className='author'>Written by a Rework academy staff, Updated on july 26, 2024</div>
         </div>
         <div className="dropdown-enq">
-          <div className="dropbtn"> <SlOptionsVertical size={20} style={{ color: 'black' }} /></div>
+          <div className="dropbtn-enq"> <SlOptionsVertical size={20} style={{ color: 'black' }} /></div>
           <div className="dropdown-content">
             <button onClick={handleShow}>Create Enquiry</button>
             <button onClick={handleUpdateShow}>Update status</button>
@@ -132,51 +134,50 @@ const EnquiryDetails = () => {
         </Form>
       </div>
       <div className='progress-and-message'>
-        <ListGroup className='message-box'>
-          <ListGroup.Item >
-            <div style={{ display: '', justifyContent: 'space-between' }} className='message-body'>
-              <div className='message-header'>Current staff</div>
-              <div className='message-header'>Follow up message</div>
-            </div>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div className='message-details'>Sam Adahi</div>
-              <div className='message-details'>What is the price for it?</div>
-            </div>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div className='message-details'>Emmmanuel Ajimobi</div>
-              <div className='message-details'>Lorem ipsum dolor sit amet.</div>
-            </div>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div className='message-details'>Lamea Grass</div>
-              <div className='message-details'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, nostrum!</div>
-            </div>
-          </ListGroup.Item>
-        </ListGroup>
+        <ListGroup>
+          <div className='item-div'>
+            <ListGroup.Item className='list-item'>
+            <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.'/>
+              <div className='middle'>
+                <div className='list-item-name'>Diana Floss - Admin</div>
+                <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
+              </div>
+              <div>
+                <div>23-09-2024</div>
+                <div className='time'>04:09 PM</div>
+              </div>
+            </ListGroup.Item>
+          </div>
+          <div className='item-div'>
+            <ListGroup.Item className='list-item'>
+            <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.'/>
+            <div className='middle'>
+                <div className='list-item-name'>Diana Floss - Admin</div>
+                <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
+              </div>
+              <div>
+                <div>23-09-2024</div>
+                <div className='time'>04:09 PM</div>
+              </div>
+            </ListGroup.Item>
+          </div>
+          <div className='item-div'>
+            <ListGroup.Item className='list-item'>
+            <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.'/>
+            <div className='middle'>
+                <div className='list-item-name'>Diana Floss - Admin</div>
+                <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
+              </div>
+              <div>
+                <div>23-09-2024</div>
+                <div className='time'>04:09 PM</div>
+              </div>
+            </ListGroup.Item>
+          </div>   
+           </ListGroup>
 
         <div className="tracking">
-          <div className='header'>Tracking</div>
-          <div className="tracker">
-            <div className='current-progress'>Enrolled</div>
-            <div className='date'>1/02/2024</div>
-          </div>
-          <div className="tracker">
-            <div className='current-progress'>Opt-out</div>
-            <div className='date'>1/02/2024</div>
-          </div>
-          <div className=" tracker">
-            <div className='current-progress'>Opt-out</div>
-            <div className='date'>1/02/2024</div>
-          </div>
-          <div className=" tracker">
-            <div className='current-progress'>Opt-out</div>
-            <div className='date'>1/02/2024</div>
-          </div>
+        <ProgressBar now={now} label={`${now}%`} visuallyHidden className='status-bar'/>;
         </div>
 
       </div>
