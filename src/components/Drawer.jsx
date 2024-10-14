@@ -7,7 +7,7 @@ import logo from "../assets/images/reworklogo.png";
 import '../assets/styles/components/drawer.css';
 import { Container } from 'react-bootstrap';
 import MyNav from './MyNav';
-import { FaUserCircle } from "react-icons/fa";
+import { FaBell, FaUserCircle } from "react-icons/fa";
 import Dropdown from 'react-bootstrap/Dropdown';
 
 
@@ -58,8 +58,19 @@ const Drawer = () => {
             </Button>
           )}
           <div className='dash-title'>Dashboard</div>
+          <div className="dropdown-main">
+              <div className="dropbtn-notification"> <FaBell size={20} style={{ color: 'black' }} /></div>
+              <div className="dropdown-content">
+                <div>notification 1</div>
+                <div>notification 1</div>
+                <div>notification 1</div>
+                <div>notification 1</div>
+                <div>notification 1</div>
+                <div>See more</div>
+              </div>
+            </div>
             <div className="dropdown-main">
-              <div className="dropbtn"> <FaUserCircle size={40} style={{ color: 'black' }} /></div>
+              <div className="dropbtn"> <FaUserCircle size={30} style={{ color: 'black' }} /></div>
               <div className="dropdown-content">
                 <div>Log out</div>
                 <div>Forgot password</div>

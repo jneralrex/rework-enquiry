@@ -143,7 +143,7 @@ const EnquiryDetails = () => {
                 <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
               </div>
               <div>
-                <div>23-09-2024</div>
+                <div className='list-item-date'>23-09-2024</div>
                 <div className='time'>04:09 PM</div>
               </div>
             </ListGroup.Item>
@@ -156,8 +156,8 @@ const EnquiryDetails = () => {
                 <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
               </div>
               <div>
-                <div>23-09-2024</div>
-                <div className='time'>04:09 PM</div>
+              <div className='list-item-date'>23-09-2024</div>
+              <div className='time'>04:09 PM</div>
               </div>
             </ListGroup.Item>
           </div>
@@ -169,8 +169,8 @@ const EnquiryDetails = () => {
                 <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
               </div>
               <div>
-                <div>23-09-2024</div>
-                <div className='time'>04:09 PM</div>
+              <div className='list-item-date'>23-09-2024</div>
+              <div className='time'>04:09 PM</div>
               </div>
             </ListGroup.Item>
           </div>   

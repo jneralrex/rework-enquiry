@@ -118,11 +118,16 @@
   position: relative;
   font-size: 16px;
   border: none;
-  margin-top: 20px;
-  margin-left: 200px;
-  right: 10px;
+  /* margin-top: 20px; */
+  /* margin-left: 200px; */
 }
-
+.dropbtn-notification{
+  margin-left: 50px;
+}
+.dropdown-notification{
+  position: relative;
+  display: inline-block;
+}
 .dropdown-main {
   position: relative;
   display: inline-block;
@@ -132,7 +137,6 @@
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  max-width: 160px;
   right: 0;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -151,6 +155,7 @@
 
 .dropdown-main:hover .dropdown-content {
   display: block;
+  margin-top: 10px;
 }
 
 .dropdown-main:hover .dropbtn {
