@@ -103,7 +103,7 @@
 
 .details {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto ;
 }
 
 .staff-and-customer-details {
