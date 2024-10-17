@@ -9,6 +9,7 @@
   width: 100%;
 }
 
+
 .drawer-offcanvas {
   justify-content: center;
   display: flex;
@@ -18,6 +19,7 @@
 .desktopDrawer{
   padding-top:30px !important;
   border-right:2px solid #eaeaea;
+  height: 100vh;
   
 }
 

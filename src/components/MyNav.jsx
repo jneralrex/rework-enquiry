@@ -25,13 +25,6 @@ const MyNav = ({ handleClose }) => {
         <LuUsers /> Enquiries
       </NavLink>
       <NavLink
-        to='/drawer/enquiry-details'
-        className={({ isActive }) => (isActive ? "link active-link" : "link")}
-        onClick={handleClose}
-      >
-        <FiBell /> Enquiries details
-      </NavLink>
-      <NavLink
         to='/drawer/follow-up'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
@@ -59,23 +52,16 @@ const MyNav = ({ handleClose }) => {
       >
         <FiBell /> Notification
       </NavLink>
-      <NavLink
-        to='/drawer/report'
-        className={({ isActive }) => (isActive ? "link active-link" : "link")}
-        onClick={handleClose}
-      >
-        <TbReportSearch /> Report
-      </NavLink>
       <hr className="offcanvas-divider" />
       <NavLink
-        to='/drawer/system-activities'
+        to='/drawer/change-password'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
         <BiUserCheck /> Change password
       </NavLink>
       <NavLink
-        to='/drawer/system-activities'
+        to='/drawer/logout'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >

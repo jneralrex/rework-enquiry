@@ -10,7 +10,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Enquiry = () => {
   const navigate = useNavigate();
@@ -105,7 +105,11 @@ const Enquiry = () => {
         <tbody>
           {displayedData.map((student, idx) => (
             <tr key={idx}>
-              <td>{student.source}</td>
+              <td>
+                <Link to="enquiry-details" className="student-name">
+              {student.source}
+              </Link>
+              </td>
               <td>{student.description}</td>
               <td>{student.email}</td>
               <td>{student.status}</td>
