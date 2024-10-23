@@ -4,20 +4,45 @@ import logo from "../assets/images/reworklogo.png";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom"; 
+import { API_URL } from "../config";
 
 const Login = () => {
     const [validated, setValidated] = useState(false);
+    const [login, setLogin] = useState({ email: '', password: '' });
+    const navigate = useNavigate(); 
+
 
     const handleSubmit = (event) => {
+        event.preventDefault(); 
         const form = event.currentTarget;
+
         if (form.checkValidity() === false) {
-            event.preventDefault();
             event.stopPropagation();
+        } else {
+            allowLogin(); 
         }
 
         setValidated(true);
     };
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setLogin({ ...login, [name]: value }); 
+    };
+
+    const allowLogin = async () => {
+        try {
+            const res = await axios.post(`${API_URL}/auth/login`, login);
+            const token = res.data.token;
+            sessionStorage.setItem('authToken', token);
+            navigate('/drawer/dashboard');
+        } catch (error) {
+            console.error("Login failed", error);
+        }
+    };
+
     return (
         <Container
             fluid
@@ -37,7 +62,7 @@ const Login = () => {
                     borderRadius: "10px",
                 }}
             >
-                <div style={{top:'0',}}>
+                <div style={{ top: '0' }}>
                     <div
                         style={{
                             width: "100%",
@@ -47,9 +72,8 @@ const Login = () => {
                             flexDirection: "column",
                         }}
                     >
-                        <img src={logo} alt="Rework logo" style={{marginBottom:'15px'}}/>
+                        <img src={logo} alt="Rework logo" style={{ marginBottom: '15px' }} />
                         <div
-                            className=""
                             style={{
                                 width: "314px",
                                 height: "24px",
@@ -66,7 +90,6 @@ const Login = () => {
                             REWORK MANAGEMENT
                         </div>
                         <div
-                            className=""
                             style={{
                                 width: "314px",
                                 height: "30px",
@@ -83,7 +106,6 @@ const Login = () => {
                             ADMIN LOGIN
                         </div>
                         <div
-                            className=""
                             style={{
                                 width: "314px",
                                 height: "20px",
@@ -100,21 +122,42 @@ const Login = () => {
                             Enter your email and password
                         </div>
                     </div>
-                    <div style={{margin:'50px'}}>
-                    <Form>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" />
-                        </Form.Group>
+                    <div style={{ margin: '50px' }}>
+                        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Label>Email address</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="email"
+                                    placeholder="Enter email"
+                                    name="email"
+                                    value={login.email}
+                                    onChange={handleInputChange}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    Please enter a valid email.
+                                </Form.Control.Feedback>
+                            </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" />
-                        </Form.Group>
-                        <Button variant="primary" type="submit" style={{width:'100%', height:'48px', backgroundColor:'#00afef', }}>
-                           <Link to='drawer/dashboard' className=""> Log in</Link>
-                        </Button>
-                    </Form>
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="password"
+                                    placeholder="Password"
+                                    name="password"
+                                    value={login.password}
+                                    onChange={handleInputChange}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    Please enter your password.
+                                </Form.Control.Feedback>
+                            </Form.Group>
+
+                            <Button variant="primary" type="submit" style={{ width: '100%', height: '48px', backgroundColor: '#00afef' }}>
+                                Log in
+                            </Button>
+                        </Form>
                     </div>
                 </div>
             </Card>

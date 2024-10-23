@@ -1,22 +1,119 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import { LuLink2, LuUsers } from "react-icons/lu";
-import { FiPlus, FiFilter, FiUser } from "react-icons/fi";
-import '../assets/styles/pages/dashboard.css';
+import { FiPlus, FiFilter } from "react-icons/fi";
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { RiExchangeBoxLine, } from "react-icons/ri";
+import { RiExchangeBoxLine } from "react-icons/ri";
 import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import axios from "axios";
+import { API_URL } from "../config";
+import '../assets/styles/pages/dashboard.css';
 
 const Dashboard = () => {
-  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const token = sessionStorage.getItem('authToken');
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [error, setError] = useState('');
+  const [getAllEnq, setAllEnq] = useState([]);
+  const [getAllStaff, setAllStaff] = useState([]);
+  const [status, setStatus] = useState('');
+  const [createEnq, setCreatedEnq] = useState({
+    source: '',
+    description: '',
+    assignedStaff: '',
+    status: '',
+    followUpActions: [],
+    customerDetails: {
+      name: '',
+      email: '',
+      address: '',
+      phone: '',
+      course: '',
+      quarter: '',
+      session: '',
+    },
+  });
+  console.log(createEnq);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCreatedEnq((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleCustomerDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setCreatedEnq((prev) => ({
+      ...prev,
+      customerDetails: {
+        ...prev.customerDetails,
+        [name]: value,
+      },
+    }));
+  };
+
+  const getAllEnquiries = async () => {
+    const res = await axios.get(`${API_URL}/user/enquiries`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (Array.isArray(res.data.data)) {
+      setAllEnq(res.data.data);
+    }
+  };
+
+  const getAllStaffDetails = async () => {
+    const res = await axios.get(`${API_URL}/user/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (Array.isArray(res.data.data)) {
+      setAllStaff(res.data.data);
+    }
+  };
+  const handleStatusChange = (e) => {
+    const { value } = e.target;
+    setCreatedEnq((prev) => ({
+      ...prev,
+      status: value, // Update status here
+    }));
+  };
+  const createEnquiries = async (event) => {
+    event.preventDefault();
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    if (!createEnq.status) {
+      setError("Please select a status for the enquiry.");
+      return;
+    }
+    try {
+      const res = await axios.post(`${API_URL}/user/enquiries`, { ...createEnq, status }, { headers });
+      handleClose();
+      getAllEnquiries();
+    } catch (error) {
+      console.error("Error creating enquiry:", error);
+    }
+  };
+
+  useEffect(() => {
+    getAllEnquiries();
+    getAllStaffDetails();
+  }, []);
+
 
   return (
     <>
@@ -89,8 +186,8 @@ const Dashboard = () => {
         </div>
 
         <div className="recent-enquiries-header">
-          <div className="header-title-bold">Recent Enquiries</div>
-          <div className="add-button"  onClick={handleShow}>
+          <div className="header-title-bold">All Enquiries</div>
+          <div className="add-button" onClick={handleShow}>
             <FiPlus size={20} style={{ color: "white" }} /> Add Enquiry
           </div>
         </div>
@@ -109,107 +206,32 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Amazon</td>
-                                <td>Charles Vermit </td>
-                <td>idahrex@gmail.com</td>
-                <td>Pending</td>
-                <td></td>
-                <td>Paul James</td>
-                <td>02/4/2016</td>
-                <td> <Dropdown className="table-drop-down">
-                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                    view
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu className="drop-down-menu">
-                    <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2"></Dropdown.Item>
-                    <Dropdown.Item href="#/action-3"></Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown></td>
-              </tr>
-              <tr>
-                <td>Amazon</td>
-                                <td>Charles Vermit </td>
-                <td>idahrex@gmail.com</td>
-                <td>Pending</td>
-                <td></td>
-                <td>Paul James</td>
-                <td>02/4/2016</td>
-                <td> <Dropdown className="table-drop-down">
-                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                    view
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu className="drop-down-menu">
-                    <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2"></Dropdown.Item>
-                    <Dropdown.Item href="#/action-3"></Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown></td>
-              </tr>
-              <tr>
-                <td>Amazon</td>
-                                <td>Charles Vermit </td>
-                <td>idahrex@gmail.com</td>
-                <td>Pending</td>
-                <td></td>
-                <td>Paul James</td>
-                <td>02/4/2016</td>
-                <td> <Dropdown className="table-drop-down">
-                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                    view
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu className="drop-down-menu">
-                    <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2"></Dropdown.Item>
-                    <Dropdown.Item href="#/action-3"></Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown></td>
-              </tr>
-              <tr>
-                <td>Amazon</td>
-                                <td>Charles Vermit </td>
-                <td>idahrex@gmail.com</td>
-                <td>Pending</td>
-                <td></td>
-                <td>Paul James</td>
-                <td>02/4/2016</td>
-                <td> <Dropdown className="table-drop-down">
-                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                    view
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu className="drop-down-menu">
-                    <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2"></Dropdown.Item>
-                    <Dropdown.Item href="#/action-3"></Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown></td>
-              </tr>
-              <tr>
-                <td>Amazon</td>
-                                <td>Charles Vermit Anthony </td>
-                <td>idahrex@gmail.com</td>
-                <td>Pending</td>
-                <td></td>
-                <td>Paul James</td>
-                <td>02/4/2016</td>
-                <td> <Dropdown className="table-drop-down">
-                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                    view
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu className="drop-down-menu">
-                    <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2"></Dropdown.Item>
-                    <Dropdown.Item href="#/action-3"></Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown></td>
-              </tr>
+              {getAllEnq && getAllEnq.map((enqDetails) => (
+                <tr key={enqDetails._id}>
+                  <td>{enqDetails?.source}</td>
+                  <td>{enqDetails?.customerDetails?.name || 'N/A'}</td>
+                  <td>{enqDetails?.customerDetails?.email}</td>
+                  <td>{enqDetails?.status}</td>
+                  <td>{Array.isArray(enqDetails?.followUpActions) ? enqDetails.followUpActions.join(', ') : 'N/A'}</td>
+                  <td>{enqDetails?.assignedStaff?.name || 'N/A'}</td>
+                  <td>{new Date(enqDetails?.createdAt).toLocaleString() || 'N/A'}</td>
+                  <td>
+                    <Dropdown className="table-drop-down">
+                      <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
+                        view
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="drop-down-menu">
+                        <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2"></Dropdown.Item>
+                        <Dropdown.Item href="#/action-3"></Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))}
             </tbody>
+
+
           </Table>
         </div>
         <div className="second-enquiries-header">
@@ -279,34 +301,42 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
       <Modal
         show={show}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
       >
-          <Form>
-        <Modal.Header>
-          <Modal.Title>Create Enquiry</Modal.Title>
-        </Modal.Header>
-        <Modal.Body >
+        <Form>
+          <Modal.Header>
+            <Modal.Title>Create Enquiry</Modal.Title>
+            {error && <div className="text-danger">{error}</div>}
+          </Modal.Header>
+          <Modal.Body >
             <div className='modal-form'>
               <div>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Source</Form.Label>
-                  <Form.Select aria-label="Default select example">
-                    <option></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <Form.Label>Source</Form.Label>
+                  <Form.Select
+                    name="source"
+                    value={createEnq.source}
+                    onChange={handleInputChange}>
+                    <option value=""></option>
+                    {getAllEnq && getAllEnq.map((enq) => (
+                      <option key={enq.source} value={enq.source}>{enq.source}</option>
+                    ))}
+
                   </Form.Select>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Description</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Form.Control
                     as="textarea"
-                    placeholder=""
+                    name="description"
+                    value={createEnq.description}
+                    onChange={handleInputChange}
                     style={{ height: '100px' }}
                   />
                 </Form.Group>
@@ -315,20 +345,26 @@ const Dashboard = () => {
               </div>
               <div>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Assigned staff</Form.Label>
-                  <Form.Select aria-label="Default select example">
-                    <option></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <Form.Label>Assigned staff</Form.Label>
+                  <Form.Select
+                    name="assignedStaff"
+                    value={createEnq.assignedStaff}
+                    onChange={handleInputChange}
+                  >
+                    <option value=""></option>
+                    {getAllStaff && getAllStaff.map((staff) => (
+                      <option key={staff.id} value={staff.id}>{staff.name}</option>
+                    ))}
                   </Form.Select>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Follow-up action</Form.Label>
+                  <Form.Label>Follow-up action</Form.Label>
                   <FloatingLabel controlId="floatingTextarea2" label="">
                     <Form.Control
                       as="textarea"
+                      value={createEnq.followUpActions.join(', ')}
+                      onChange={(e) => setCreatedEnq({ ...createEnq, followUpActions: e.target.value.split(', ') })}
                       style={{ height: '100px' }}
                     />
                   </FloatingLabel>
@@ -338,67 +374,84 @@ const Dashboard = () => {
               </div>
             </div>
             <Row className="mb-3">
-              {['checkbox'].map((type) => (
-                <div key={`inline-${type}`} className="mb-3">
-                  <Form.Check
-                    inline
-                    label="New"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-1`}
-                  />
-                  <Form.Check
-                    inline
-                    label="In-progress"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-2`}
-                  />
-                  <Form.Check
-                    inline
-                    label="Enrolled"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-3`}
-                  />
-                  <Form.Check
-                    inline
-                    label="Opt-out"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-4`}
-                  />
-                </div>
-              ))}
+              <Form.Check
+                inline
+                label="New"
+                name="status"
+                type="radio"
+                id="inline-radio-1"
+                value="New"
+                checked={createEnq.status === 'New'}
+                onChange={handleStatusChange}
+              />
+              <Form.Check
+                inline
+                label="In-progress"
+                name="status"
+                type="radio"
+                id="inline-radio-2"
+                value="In-progress"
+                checked={createEnq.status === 'In-progress'}
+                onChange={handleStatusChange}
+              />
+              <Form.Check
+                inline
+                label="Enrolled"
+                name="status"
+                type="radio"
+                id="inline-radio-3"
+                value="Enrolled"
+                checked={createEnq.status === 'Enrolled'}
+                onChange={handleStatusChange}
+              />
+              <Form.Check
+                inline
+                label="Opt-out"
+                name="status"
+                type="radio"
+                id="inline-radio-4"
+                value="Opt-out"
+                checked={createEnq.status === 'Opt-out'}
+                onChange={handleStatusChange}
+              />
             </Row>
+
+
             <div className='modal-form'>
               <div>
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Name</Form.Label>
                   <Form.Control
                     required
                     type="text"
                     placeholder="Name"
-                    defaultValue="Mark"
+                    name="name"
+                    value={createEnq.customerDetails.name}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Address</Form.Label>
+                  <Form.Label>Address</Form.Label>
                   <Form.Control
                     as="textarea"
                     placeholder="Leave a comment here"
+                    name="address"
+                    value={createEnq.customerDetails.address}
+                    onChange={handleCustomerDetailsChange}
                     style={{ height: '100px' }}
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Qurater</Form.Label>
                   <Form.Control
                     required
                     type="text"
-                    placeholder=""
-                    defaultValue=""
+                    placeholder="quarter"
+                    name="quarter"
+                    value={createEnq.customerDetails.quarter}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
 
@@ -407,57 +460,65 @@ const Dashboard = () => {
               </div>
 
               <div>
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
                     required
                     type="text"
                     placeholder="email"
-                    defaultValue="xyz@rework.com"
+                    name="email"
+                    value={createEnq.customerDetails.email}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>phone</Form.Label>
                   <Form.Control
                     required
                     type="tel"
                     placeholder="+234"
-                    defaultValue="+234"
+                    name="phone"
+                    value={createEnq.customerDetails.phone}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Course (optional)</Form.Label>
                   <Form.Control
                     required
                     type="text"
-                    placeholder=""
-                    defaultValue=""
+                    placeholder="course"
+                    name="course"
+                    value={createEnq.customerDetails.course}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Session (optional)</Form.Label>
                   <Form.Control
                     required
                     type="text"
-                    placeholder=""
-                    defaultValue=""
+                    placeholder="session"
+                    name="session"
+                    value={createEnq.customerDetails.session}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
                 <div>
                 </div>
               </div>
             </div>
-        </Modal.Body>
-        <Modal.Footer className='modal-footer'>
-          <Button variant="primary" >
-            save
-          </Button>
-          <Button variant="danger" onClick={handleClose}>cancel</Button>
-        </Modal.Footer>
-          </Form>
+          </Modal.Body>
+          <Modal.Footer className='modal-footer'>
+            <Button variant="primary" onClick={createEnquiries} >
+              save
+            </Button>
+            <Button variant="danger" onClick={handleClose}>cancel</Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </>
   );
