@@ -86,7 +86,7 @@ const Dashboard = () => {
     const { value } = e.target;
     setCreatedEnq((prev) => ({
       ...prev,
-      status: value, // Update status here
+      status: value,
     }));
   };
   const createEnquiries = async (event) => {
@@ -229,8 +229,6 @@ const Dashboard = () => {
                 </tr>
               ))}
             </tbody>
-
-
           </Table>
         </div>
         <div className="second-enquiries-header">

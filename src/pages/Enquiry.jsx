@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Card from "react-bootstrap/Card";
@@ -11,33 +11,46 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_URL } from "../config";
 
 const Enquiry = () => {
   const navigate = useNavigate();
-  const studentsData = Array(50).fill(null).map((_, idx) => ({
-    source: "Amazon",
-    description: "Entertainment",
-    status: "Pending",
-    email: "idahrex@gmail.com",
-    staff: "Paul James",
-    date: "02/4/2016",
-  }));
+  const [getAllEnq, setAllEnq] = useState([]);
+  const token = sessionStorage.getItem('authToken');
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
   // Slicing data for pagination
-  const displayedData = studentsData.slice(
+  const displayedData = getAllEnq.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  
 
+  const getAllEnquiries = async () => {
+    const res = await axios.get(`${API_URL}/user/enquiries`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (Array.isArray(res.data.data)) {
+      setAllEnq(res.data.data);
+    }
+  };
 
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+
+  useEffect(() => {
+    getAllEnquiries();
+  }, []);
   return (
     <div className="con">
 
@@ -90,83 +103,84 @@ const Enquiry = () => {
 
       {/* Table with manual pagination */}
       <div className="table-container">
-      <Table bordered className="table">
-        <thead>
-          <tr>
-            <th>Source</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Follow-Up Actions</th>
-            <th>Assigned Staff</th>
-            <th>Created At</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {displayedData.map((student, idx) => (
-            <tr key={idx}>
-              <td>
-                <Link to="enquiry-details" className="student-name">
-              {student.source}
-              </Link>
-              </td>
-              <td>{student.description}</td>
-              <td>{student.email}</td>
-              <td>{student.status}</td>
-              <td>{student.staff}</td>
-              <td>{student.date}</td>
-              <td>
-                <Dropdown className="table-drop-down">
-                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                    view
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu className="drop-down-menu">
-                    <Dropdown.Item href="#/action-1">view</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">edit</Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">delete</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </td>
+        <Table bordered className="table">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Follow-Up Actions</th>
+              <th>Assigned Staff</th>
+              <th>Created At</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {getAllEnq.length === 0 ? (
+              <tr>
+                <td colSpan="7">No enquiries available.</td>
+              </tr>
+            ) : (
+              getAllEnq.map((enqDetails) => (
+                <tr key={enqDetails._id}>
+                  <td>{enqDetails?.source}</td>
+                  <td>{enqDetails?.description || 'N/A'}</td>
+                  <td>{enqDetails?.status}</td>
+                  <td>{Array.isArray(enqDetails?.followUpActions) ? enqDetails.followUpActions.join(', ') : 'N/A'}</td>
+                  <td>{enqDetails?.assignedStaff?.name || 'N/A'}</td>
+                  <td>{new Date(enqDetails?.createdAt).toLocaleString() || 'N/A'}</td>
+                  <td>
+                    <Dropdown className="table-drop-down">
+                      <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
+                        view
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="drop-down-menu">
+                        <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2"></Dropdown.Item>
+                        <Dropdown.Item href="#/action-3"></Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </Table>
       </div>
 
       {/* Pagination Controls */}
       <div className="pagination-controls">
-        <div className="next-page-pointer">
-          <div>Next</div>
-          <div><FiArrowRight /></div>
-        </div>
-        <div>
-          {Array(Math.ceil(studentsData.length / itemsPerPage)).fill(null).map((_, idx) => (
-            <button
-              key={idx}
-              className={`page-button ${currentPage === idx + 1 ? 'active' : ''}`}
-              onClick={() => handlePageChange(idx + 1)}
-            >
-              {idx + 1}
-            </button>
-          ))}
-        </div>
-      </div>
+  <div className="next-page-pointer">
+    <div>Next</div>
+    <div><FiArrowRight /></div>
+  </div>
+  <div>
+    {Array(Math.ceil(getAllEnq.length / itemsPerPage)).fill(null).map((_, idx) => (
+      <button
+        key={idx}
+        className={`page-button ${currentPage === idx + 1 ? 'active' : ''}`}
+        onClick={() => handlePageChange(idx + 1)}
+      >
+        {idx + 1}
+      </button>
+    ))}
+  </div>
+</div>
       <Modal
         show={show}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
       >
-          <Form>
-        <Modal.Header>
-          <Modal.Title>Create Enquiry</Modal.Title>
-        </Modal.Header>
-        <Modal.Body >
+        <Form>
+          <Modal.Header>
+            <Modal.Title>Create Enquiry</Modal.Title>
+          </Modal.Header>
+          <Modal.Body >
             <div className='modal-form'>
               <div>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Source</Form.Label>
+                  <Form.Label>Source</Form.Label>
                   <Form.Select aria-label="Default select example">
                     <option></option>
                     <option value="1">One</option>
@@ -176,7 +190,7 @@ const Enquiry = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Description</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Form.Control
                     as="textarea"
                     placeholder=""
@@ -188,7 +202,7 @@ const Enquiry = () => {
               </div>
               <div>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Assigned staff</Form.Label>
+                  <Form.Label>Assigned staff</Form.Label>
                   <Form.Select aria-label="Default select example">
                     <option></option>
                     <option value="1">One</option>
@@ -198,7 +212,7 @@ const Enquiry = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Follow-up action</Form.Label>
+                  <Form.Label>Follow-up action</Form.Label>
                   <FloatingLabel controlId="floatingTextarea2" label="">
                     <Form.Control
                       as="textarea"
@@ -246,7 +260,7 @@ const Enquiry = () => {
             </Row>
             <div className='modal-form'>
               <div>
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Name</Form.Label>
                   <Form.Control
                     required
@@ -257,7 +271,7 @@ const Enquiry = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Address</Form.Label>
+                  <Form.Label>Address</Form.Label>
                   <Form.Control
                     as="textarea"
                     placeholder="Leave a comment here"
@@ -265,7 +279,7 @@ const Enquiry = () => {
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Qurater</Form.Label>
                   <Form.Control
                     required
@@ -280,7 +294,7 @@ const Enquiry = () => {
               </div>
 
               <div>
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
                     required
@@ -290,7 +304,7 @@ const Enquiry = () => {
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>phone</Form.Label>
                   <Form.Control
                     required
@@ -300,7 +314,7 @@ const Enquiry = () => {
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Course (optional)</Form.Label>
                   <Form.Control
                     required
@@ -310,7 +324,7 @@ const Enquiry = () => {
                   />
                 </Form.Group>
 
-                <Form.Group  md="4" controlId="validationCustom01">
+                <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Session (optional)</Form.Label>
                   <Form.Control
                     required
@@ -323,14 +337,14 @@ const Enquiry = () => {
                 </div>
               </div>
             </div>
-        </Modal.Body>
-        <Modal.Footer className='modal-footer'>
-          <Button variant="primary" >
-            save
-          </Button>
-          <Button variant="danger" onClick={handleClose}>cancel</Button>
-        </Modal.Footer>
-          </Form>
+          </Modal.Body>
+          <Modal.Footer className='modal-footer'>
+            <Button variant="primary" >
+              save
+            </Button>
+            <Button variant="danger" onClick={handleClose}>cancel</Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </div>
   );
