@@ -39,7 +39,6 @@ const Dashboard = () => {
       session: '',
     },
   });
-  console.log(createEnq);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

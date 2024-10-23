@@ -37,7 +37,6 @@ const Login = () => {
             const token = res.data.token;
             sessionStorage.setItem('authToken', token);
             navigate('/drawer/dashboard');
-            console.log(res)
         } catch (error) {
             console.error("Login failed", error);
         }
