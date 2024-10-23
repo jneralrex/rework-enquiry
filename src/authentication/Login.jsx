@@ -12,7 +12,7 @@ const Login = () => {
     const [validated, setValidated] = useState(false);
     const [login, setLogin] = useState({ email: '', password: '' });
     const navigate = useNavigate(); 
-
+    console.log(import.meta.env) 
 
     const handleSubmit = (event) => {
         event.preventDefault(); 
