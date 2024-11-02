@@ -8,7 +8,6 @@ import '../assets/styles/components/drawer.css';
 import { Container } from 'react-bootstrap';
 import MyNav from './MyNav';
 import { FaBell, FaUserCircle } from "react-icons/fa";
-import Dropdown from 'react-bootstrap/Dropdown';
 
 
 const Drawer = () => {
@@ -45,7 +44,7 @@ const Drawer = () => {
             </Offcanvas.Header>
             <img src={logo} alt="Rework logo" className="offcanvas-logo" />
             <Offcanvas.Body className="offcanvas-body">
-              <MyNav handleClose={handleClose} /> {/* Pass handleClose to MyNav */}
+              <MyNav handleClose={handleClose} />
             </Offcanvas.Body>
           </Offcanvas>
 

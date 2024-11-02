@@ -1,16 +1,20 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import dotenv from 'dotenv';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
-// Load environment variables from .env
 dotenv.config();
 
-// Access the API URL from process.env
-const API_URL = process.env.VITE_API_URL;
+const API_URL = process.env.NODE_ENV === 'production' ? process.env.VITE_API_URL : process.env.VITE_DEV_URL;
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    NodeGlobalsPolyfillPlugin({
+      process: true,
+      buffer: true,
+    }),
+  ],
   server: {
     proxy: {
       '/api': {
@@ -18,6 +22,19 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          process: true,
+          buffer: true,
+        }),
+      ],
     },
   },
 });

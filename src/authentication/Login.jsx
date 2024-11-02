@@ -36,7 +36,7 @@ const Login = () => {
             const res = await axios.post(`${API_URL}/auth/login`, login);
             const token = res.data.token;
             sessionStorage.setItem('authToken', token);
-            navigate('/drawer/dashboard');
+            navigate('/users/dashboard');
         } catch (error) {
             console.error("Login failed", error);
         }

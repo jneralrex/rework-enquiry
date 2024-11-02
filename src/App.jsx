@@ -20,11 +20,11 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path='/' element={<Login />} />
-      <Route path='drawer' element={<Drawer />}>
+      <Route path='users' element={<Drawer />}>
         <Route path='dashboard' element={<Dashboard />} />
         <Route path='enquiry' element={<Enquiry />} />
         <Route path='follow-up' element={<Followups />} />
-        <Route path='enquiry/enquiry-details' element={<EnquiryDetails />} />
+        <Route path='enquiries/:encodedId' element={<EnquiryDetails />} />
         <Route path='customer' element={<Customer />} />
         <Route path='notifications' element={<Notification />} />
         <Route path='user-management' element={<UserManagement />} />

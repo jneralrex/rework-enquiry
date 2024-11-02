@@ -11,42 +11,42 @@ const MyNav = ({ handleClose }) => {
   return (
     <>
       <NavLink
-        to='/drawer/dashboard'
+        to='/users/dashboard'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose} // Close the drawer
       >
         <FiHome /> Dashboard
       </NavLink>
       <NavLink
-        to='/drawer/enquiry'
+        to='/users/enquiry'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
         <LuUsers /> Enquiries
       </NavLink>
       <NavLink
-        to='/drawer/follow-up'
+        to='/users/follow-up'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
         <FiBook /> Follow ups
       </NavLink>
       <NavLink
-        to='/drawer/customer'
+        to='/users/customer'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
         <RiCustomerService2Fill /> Customer
       </NavLink>
       <NavLink
-        to='/drawer/user-management'
+        to='/users/user-management'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
         <HiOutlineShoppingBag /> User management
       </NavLink>
       <NavLink
-        to='/drawer/notifications'
+        to='/users/notifications'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
@@ -54,7 +54,7 @@ const MyNav = ({ handleClose }) => {
       </NavLink>
       <hr className="offcanvas-divider" />
       <NavLink
-        to='/drawer/change-password'
+        to='/users/change-password'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >

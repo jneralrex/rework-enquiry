@@ -4,7 +4,6 @@ import { LuLink2, LuUsers } from "react-icons/lu";
 import { FiPlus, FiFilter } from "react-icons/fi";
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { RiExchangeBoxLine } from "react-icons/ri";
 import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
@@ -13,16 +12,60 @@ import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import { API_URL } from "../config";
 import '../assets/styles/pages/dashboard.css';
+import { Link } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
+
+const DashboardCard = ({ title, count, color, icon }) => (
+  <Card className="dashboard-card">
+    <Card.Body className="dashboard-card-body">
+      <div className="card-icon-container" style={{ border: `1px solid ${color}` }}>
+        {icon}
+      </div>
+      <div className="card-title">{title}</div>
+    </Card.Body>
+    <p className="card-stat">{count}</p>
+    <div className="card-link">
+      <div><LuLink2 size={15} style={{ color: '#16b6f0' }} /></div> <div>click link to view</div>
+    </div>
+  </Card>
+);
+
+const EnquiryRow = ({ enquiry }) => {
+  const encodedId = btoa(enquiry._id); //btoa for base64 encoding
+  return (
+    <tr key={enquiry._id}>
+      <Link className='dash-link' to={`/users/enquiries/${encodedId}`}>
+        <td>{enquiry.source || 'N/A'}</td>
+      </Link>
+      <td>{enquiry.customerDetails?.name || 'N/A'}</td>
+      <td>{enquiry.customerDetails?.email}</td>
+      <td>{enquiry.status}</td>
+      <td>{enquiry.followUpActions?.join(', ') || 'N/A'}</td>
+      <td>{enquiry.assignedStaff?.name || 'N/A'}</td>
+      <td>{new Date(enquiry.createdAt).toLocaleString() || 'N/A'}</td>
+      <td>
+        <Dropdown className="table-drop-down">
+          <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
+            View
+          </Dropdown.Toggle>
+          <Dropdown.Menu className="drop-down-menu">
+            <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </td>
+    </tr>
+  );
+};
 
 const Dashboard = () => {
   const token = sessionStorage.getItem('authToken');
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [getAllEnq, setAllEnq] = useState([]);
   const [getAllStaff, setAllStaff] = useState([]);
-  const [status, setStatus] = useState('');
   const [createEnq, setCreatedEnq] = useState({
     source: '',
     description: '',
@@ -39,6 +82,7 @@ const Dashboard = () => {
       session: '',
     },
   });
+  const sources = ['Email', 'Phone', 'Social Media', 'Physical Walk-in', 'WhatsApp', 'Indirect Referral'];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,6 +90,7 @@ const Dashboard = () => {
       ...prev,
       [name]: value,
     }));
+
   };
 
   const handleCustomerDetailsChange = (e) => {
@@ -82,6 +127,7 @@ const Dashboard = () => {
       setAllStaff(res.data.data);
     }
   };
+
   const handleStatusChange = (e) => {
     const { value } = e.target;
     setCreatedEnq((prev) => ({
@@ -89,6 +135,7 @@ const Dashboard = () => {
       status: value,
     }));
   };
+
   const createEnquiries = async (event) => {
     event.preventDefault();
     const headers = {
@@ -100,7 +147,7 @@ const Dashboard = () => {
       return;
     }
     try {
-      const res = await axios.post(`${API_URL}/user/enquiries`, { ...createEnq, status }, { headers });
+      const res = await axios.post(`${API_URL}/user/enquiries`, createEnq, { headers });
       handleClose();
       getAllEnquiries();
     } catch (error) {
@@ -109,81 +156,30 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    getAllEnquiries();
-    getAllStaffDetails();
+    const fetchData = async () => {
+      setLoading(true);
+      await Promise.all([getAllEnquiries(), getAllStaffDetails()]);
+      setLoading(false);
+    };
+    fetchData();
   }, []);
 
+  const totalEnquiries = getAllEnq.length;
+  const newEnquiries = getAllEnq.filter(enq => enq.status === 'New').length;
+  const pendingEnquiries = getAllEnq.filter(enq => enq.status === 'In Progress').length;
+  const closedEnquiries = getAllEnq.filter(enq => enq.status === 'Closed').length;
 
   return (
     <>
       <div className="dashboard-container">
         <div className="dashboard-cards">
-          <Card className="dashboard-card">
-            <Card.Body className="dashboard-card-body">
-              <div className="card-icon-container">
-                <LuUsers size={20} />
-              </div>
-              <div className="card-title">New Enquiries</div>
-            </Card.Body>
-            <p className="card-stat">20</p>
-            <div className="card-link">
-              <div><LuLink2 size={15} style={{ color: '#16b6f0' }} /></div> <div>click link to view</div>
-            </div>
-          </Card>
-
-          <Card className="dashboard-card">
-            <Card.Body className="dashboard-card-body">
-              <div className="card-icon-container" style={{ border: "1px solid #ffc530" }}>
-                <LuUsers size={20} style={{ color: "#ffc530" }} />
-              </div>
-              <div className="card-title">Pending Enquiries</div>
-            </Card.Body>
-            <p className="card-stat">5</p>
-            <div className="card-link">
-              <div><LuLink2 size={15} style={{ color: '#16b6f0' }} /></div> <div>click link to view</div>
-            </div>
-          </Card>
-
-          <Card className="dashboard-card">
-            <Card.Body className="dashboard-card-body">
-              <div className="card-icon-container" style={{ border: "1px solid #fc6565" }}>
-                <LuUsers size={20} style={{ color: "#fc6565" }} />
-              </div>
-              <div className="card-title">Closed Enquiries</div>
-            </Card.Body>
-            <p className="card-stat">52</p>
-            <div className="card-link">
-              <div><LuLink2 size={15} style={{ color: '#16b6f0' }} /></div> <div>click link to view</div>
-            </div>
-          </Card>
-
-          <Card className="dashboard-card">
-            <Card.Body className="dashboard-card-body">
-              <div className="card-icon-container" style={{ border: "1px solid #16b6f0" }}>
-                <LuUsers size={20} style={{ color: "#16b6f0" }} />
-              </div>
-              <div className="card-title">Total Enquiries</div>
-            </Card.Body>
-            <p className="card-stat">24</p>
-            <div className="card-link">
-              <div><LuLink2 size={15} style={{ color: '#16b6f0' }} /></div> <div>click link to view</div>
-            </div>
-          </Card>
-
-          <Card className="dashboard-card">
-            <Card.Body className="dashboard-card-body">
-              <div className="card-icon-container" style={{ border: "1px solid #73ce97" }}>
-                <RiExchangeBoxLine size={20} style={{ color: "#73ce97" }} />
-              </div>
-              <div className="card-title">Conversion rate</div>
-            </Card.Body>
-            <p className="card-stat">78%</p>
-            <div className="card-link">
-              <div><LuLink2 size={15} style={{ color: '#16b6f0' }} /></div> <div>click link to view</div>
-            </div>
-          </Card>
+          <div className="dashboard-cards">
+            <DashboardCard title="New Enquiries" count={newEnquiries} color="#16b6f0" icon={<LuUsers size={20} />} />
+            <DashboardCard title="Pending Enquiries" count={pendingEnquiries} color="#ffc530" icon={<LuUsers size={20} style={{ color: "#ffc530" }} />} />
+            <DashboardCard title="Closed Enquiries" count={closedEnquiries} color="#fc6565" icon={<LuUsers size={20} style={{ color: "#fc6565" }} />} />
+            <DashboardCard title="Total Enquiries" count={totalEnquiries} color="#16b6f0" icon={<LuUsers size={20} style={{ color: "#16b6f0" }} />} />
+          </div>
         </div>
-
         <div className="recent-enquiries-header">
           <div className="header-title-bold">All Enquiries</div>
           <div className="add-button" onClick={handleShow}>
@@ -191,45 +187,26 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="table-container">
-          <Table bordered className="table">
-            <thead>
-              <tr>
-                <th>Source</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Follow-Up Action</th>
-                <th>Assigned Staff</th>
-                <th>Created At</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {getAllEnq && getAllEnq.map((enqDetails) => (
-                <tr key={enqDetails._id}>
-                  <td>{enqDetails?.source}</td>
-                  <td>{enqDetails?.customerDetails?.name || 'N/A'}</td>
-                  <td>{enqDetails?.customerDetails?.email}</td>
-                  <td>{enqDetails?.status}</td>
-                  <td>{Array.isArray(enqDetails?.followUpActions) ? enqDetails.followUpActions.join(', ') : 'N/A'}</td>
-                  <td>{enqDetails?.assignedStaff?.name || 'N/A'}</td>
-                  <td>{new Date(enqDetails?.createdAt).toLocaleString() || 'N/A'}</td>
-                  <td>
-                    <Dropdown className="table-drop-down">
-                      <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                        view
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu className="drop-down-menu">
-                        <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2"></Dropdown.Item>
-                        <Dropdown.Item href="#/action-3"></Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </td>
+          {loading ? (
+            <Spinner animation="border" variant="primary" />) : (
+            <Table bordered className="table">
+              <thead>
+                <tr>
+                  <th>Source</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Follow-Up Action</th>
+                  <th>Assigned Staff</th>
+                  <th>Created At</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {getAllEnq.map(enq => <EnquiryRow key={enq._id} enquiry={enq} />)}
+              </tbody>
+            </Table>
+          )}
         </div>
         <div className="second-enquiries-header">
           <div className="flex-between">
@@ -239,10 +216,8 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
         <div className="second-table">
           <div className="table-container2">
-
             <Table bordered className="table2">
               <thead>
                 <tr>
@@ -280,7 +255,6 @@ const Dashboard = () => {
                     <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
                       view
                     </Dropdown.Toggle>
-
                     <Dropdown.Menu className="drop-down-menu">
                       <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
                       <Dropdown.Item href="#/action-2"></Dropdown.Item>
@@ -291,14 +265,12 @@ const Dashboard = () => {
               </tbody>
             </Table>
           </div>
-
           <div className="pie-holder">
             <div className="header-title-bold2">Enquiries by Source</div>
             <div className="pie-chart"></div>
           </div>
         </div>
       </div>
-
       <Modal
         show={show}
         onHide={handleClose}
@@ -320,13 +292,11 @@ const Dashboard = () => {
                     value={createEnq.source}
                     onChange={handleInputChange}>
                     <option value=""></option>
-                    {getAllEnq && getAllEnq.map((enq) => (
-                      <option key={enq.source} value={enq.source}>{enq.source}</option>
+                    {sources.map((source, index) => (
+                      <option key={index} value={source}>{source}</option>
                     ))}
-
                   </Form.Select>
                 </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Description</Form.Label>
                   <Form.Control
@@ -350,11 +320,10 @@ const Dashboard = () => {
                   >
                     <option value=""></option>
                     {getAllStaff && getAllStaff.map((staff) => (
-                      <option key={staff.id} value={staff.id}>{staff.name}</option>
+                      <option key={staff.id} value={staff._id}>{staff.name}</option>
                     ))}
                   </Form.Select>
                 </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Follow-up action</Form.Label>
                   <FloatingLabel controlId="floatingTextarea2" label="">
@@ -370,7 +339,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <Row className="mb-3">
+            <div className="mb-3">
               <Form.Check
                 inline
                 label="New"
@@ -383,12 +352,12 @@ const Dashboard = () => {
               />
               <Form.Check
                 inline
-                label="In-progress"
+                label="In Progress"
                 name="status"
                 type="radio"
                 id="inline-radio-2"
-                value="In-progress"
-                checked={createEnq.status === 'In-progress'}
+                value="In Progress"
+                checked={createEnq.status === 'In Progress'}
                 onChange={handleStatusChange}
               />
               <Form.Check
@@ -407,13 +376,21 @@ const Dashboard = () => {
                 name="status"
                 type="radio"
                 id="inline-radio-4"
-                value="Opt-out"
-                checked={createEnq.status === 'Opt-out'}
+                value="Opt-Out"
+                checked={createEnq.status === 'Opt-Out'}
                 onChange={handleStatusChange}
               />
-            </Row>
-
-
+              <Form.Check
+                inline
+                label="Closed"
+                name="status"
+                type="radio"
+                id="inline-radio-4"
+                value="Closed"
+                checked={createEnq.status === 'Closed'}
+                onChange={handleStatusChange}
+              />
+            </div>
             <div className='modal-form'>
               <div>
                 <Form.Group md="4" controlId="validationCustom01">
@@ -427,7 +404,6 @@ const Dashboard = () => {
                     onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Address</Form.Label>
                   <Form.Control
@@ -439,7 +415,6 @@ const Dashboard = () => {
                     style={{ height: '100px' }}
                   />
                 </Form.Group>
-
                 <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Qurater</Form.Label>
                   <Form.Control
@@ -451,11 +426,9 @@ const Dashboard = () => {
                     onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
-
                 <div>
                 </div>
               </div>
-
               <div>
                 <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Email</Form.Label>
@@ -468,7 +441,6 @@ const Dashboard = () => {
                     onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
-
                 <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>phone</Form.Label>
                   <Form.Control
@@ -480,7 +452,6 @@ const Dashboard = () => {
                     onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
-
                 <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Course (optional)</Form.Label>
                   <Form.Control
@@ -492,7 +463,6 @@ const Dashboard = () => {
                     onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
-
                 <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Session (optional)</Form.Label>
                   <Form.Control

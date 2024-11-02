@@ -320,6 +320,11 @@ margin-bottom: 10px;
   text-align: right;
 }
 
+.follow-up-btn {
+  height: 48px;
+  background-color: #00afef;
+}
+
 @media (max-width: 1024px) {
   .progress-and-message {
     display: flex;

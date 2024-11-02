@@ -1,62 +1,129 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import '../assets/styles/pages/enquiriesdetails.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
 import { SlOptionsVertical } from "react-icons/sl";
 import ProgressBar from 'react-bootstrap/ProgressBar';
-
-
+import axios from 'axios';
+import { API_URL } from '../config';
+import { Spinner } from 'react-bootstrap';
 
 const EnquiryDetails = () => {
+  const { encodedId } = useParams();
+  const realId = atob(encodedId);
+
+  const token = sessionStorage.getItem('authToken');
   const [show, setShow] = useState(false);
   const [showUpdate, setUpdateShow] = useState(false);
   const [showAction, setActionShow] = useState(false);
   const [showDelete, setDeleteShow] = useState(false);
+  const [validated, setValidated] = useState(false);
+  const [getEnqById, setGetEnqById] = useState(null); 
 
-
+    //I am splitting slash / from the current date and I am replacing it with dash - :
+  const formatDateWithDashes = (date = new Date()) => {
+    return date.toLocaleDateString('en-GB').split('/').join('-');
+  };
+  
+  //I am rendering date to the format that is accepted by the API:
+  const formattedDateWithDashes = formatDateWithDashes();
+  
+  const [followUpMessage, setFollowUpMessage] = useState({
+    enquiry: realId, 
+    date: formattedDateWithDashes,
+    actionTaken: '',
+    currentStaff: ''
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const handleUpdateClose = () => setUpdateShow(false);
   const handleUpdateShow = () => setUpdateShow(true);
-
   const handleActionClose = () => setActionShow(false);
   const handleActionShow = () => setActionShow(true);
-
   const handleDeleteClose = () => setDeleteShow(false);
   const handleDeleteShow = () => setDeleteShow(true);
 
-
-  const [validated, setValidated] = useState(false);
-
   const handleSubmit = (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+    if (form.checkValidity()) {
+      createFollowUpMessage(); // Only create follow-up if form is valid
+    } else {
+      setValidated(true); // Show validation errors
     }
-
-    setValidated(true);
   };
+  
 
   const now = 60;
+
+  const getEnq = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/user/enquiries/${realId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setGetEnqById(res.data.data);
+      setFollowUpMessage(prevState => ({
+        ...prevState,
+        currentStaff: res.data.data.assignedStaff?._id || ''
+      }));
+    } catch (error) {
+      console.error("Error fetching enquiry details:", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFollowUpMessage((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+  };
+
+  const createFollowUpMessage = async () => {
+    try {
+      const res = await axios.post(`${API_URL}/user/follow-up-actions`, followUpMessage, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setFollowUpMessage(res.data);
+      // Optional: Reset form fields or show success message
+      setFollowUpMessage('')
+    } catch (error) {
+      console.error("Error creating follow-up message:", error);
+      // Optional: Set an error state to display a user-friendly message
+    }
+  };
+  
+
+  useEffect(() => {
+    getEnq();
+  }, []);
+
+  if (!getEnqById) {
+    return <Spinner animation="border" variant="primary" />;
+  }
+
+  console.log(followUpMessage)
 
   return (
     <div className="enquiry-container">
       <div className='header-main'>
         <div className='question-and-details'>
-          <div className='question'>What is Full-Stack Development Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi perspiciatis distinctio ipsa dicta quis, odit dolor corrupti at velit?</div>
-          <div className='author'>Written by a Rework academy staff, Updated on july 26, 2024</div>
+          <div className='question'>{getEnqById.question || "Loading question..."}</div>
+          <div className='author'>
+            Written by a Rework academy staff, Updated on { new Date(getEnqById.createdAt).toLocaleString() || "date not available"}
+          </div>
         </div>
         <div className="dropdown-enq">
-          <div className="dropbtn-enq"> <SlOptionsVertical size={20} style={{ color: 'black' }} /></div>
+          <div className="dropbtn-enq">
+            <SlOptionsVertical size={20} style={{ color: 'black' }} />
+          </div>
           <div className="dropdown-content">
             <button onClick={handleShow}>Create Enquiry</button>
             <button onClick={handleUpdateShow}>Update status</button>
@@ -66,24 +133,22 @@ const EnquiryDetails = () => {
         </div>
       </div>
       <div className='description'>Description</div>
-      <div className='description-details'>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa consectetur sequi vitae repellendus in laborum perferendis vel quae, eum, molestias nulla similique placeat dolorum. Quae eos iusto ipsam, provident dolores nostrum, placeat modi corrupti laudantium necessitatibus hic. Non saepe quibusdam, numquam qui earum beatae culpa quia tenetur, amet optio repellat, ipsam quae maiores. Quis, eligendi. Consectetur beatae distinctio ea error neque, vel nulla dolorum non. Placeat odit veniam, velit molestias excepturi exercitationem quisquam ducimus odio id! Ullam beatae, necessitatibus ad facere delectus voluptatum ea quia, laborum dolore, iste nobis sed quam reiciendis in eaque architecto dolor? Ex id sit culpa eos recusandae ea eum, minima nobis consequatur quibusdam vel, autem quis, sunt ducimus voluptas animi! Suscipit in id rerum quos, quidem aliquam animi eaque eius porro, modi explicabo odio exercitationem excepturi velit dolorum! Repudiandae, eum sequi. Facilis, praesentium. Possimus debitis accusantium sit. Aperiam voluptatibus tempora, reiciendis nisi provident delectus ipsum!
-      </div>
+      <div className='description-details'>{getEnqById.description || "No description available"}</div>
       <div className='staff-and-customer'>
         <div className='staff'>
           <div className='staff-and-customer-header'>Current Staff Details</div>
           <div className='details'>
             <div className='staff-and-customer-details'>
-              <div className='tag'>name:</div>
-              <div className='value'>Lydia Jonathan</div>
+              <div className='tag'>Name:</div>
+              <div className='value'>{getEnqById.assignedStaff?.name || "N/A"}</div>
             </div>
             <div className='staff-and-customer-details'>
-              <div className='tag'>email:</div>
-              <div className='value'>lyjones@gmail.com</div>
+              <div className='tag'>Email:</div>
+              <div className='value'>{getEnqById.assignedStaff?.email || "N/A"}</div>
             </div>
             <div className='staff-and-customer-details'>
-              <div className='tag'>phone:</div>
-              <div className='value'>08175304512</div>
+              <div className='tag'>Phone:</div>
+              <div className='value'>{getEnqById.assignedStaff?.phone || "N/A"}</div>
             </div>
           </div>
         </div>
@@ -93,42 +158,42 @@ const EnquiryDetails = () => {
           <div className='details'>
             <div className='staff-and-customer-details'>
               <div className='tag'>name:</div>
-              <div className='value'>Samuel Kings Garba</div>
+              <div className='value'>{getEnqById.customerDetails?.name || "N/A"}</div>
             </div>
             <div className='staff-and-customer-details'>
               <div className='tag'>email</div>
-              <div className='value'>samuelkingsgarba@gmail.com</div>
+              <div className='value'>{getEnqById.customerDetails?.email || "N/A"}</div>
             </div>
             <div className='staff-and-customer-details'>
               <div className='tag'>phone:</div>
-              <div className='value'>08175225016</div>
+              <div className='value'>{getEnqById.customerDetails?.phone || "N/A"}</div>
             </div>
             <div className='staff-and-customer-details'>
               <div className='tag'>session:</div>
-              <div className='value'>2023/2024</div>
+              <div className='value'>{getEnqById.customerDetails?.session || "N/A"}</div>
             </div>
             <div className='staff-and-customer-details'>
               <div className='tag'>interest courses:</div>
-              <div className='value'>Lydia Jonathan</div>
+              <div className='value'>{getEnqById.customerDetails?.course || "N/A"}</div>
             </div>
             <div className='staff-and-customer-details'>
               <div className='tag'>marketing source:</div>
-              <div className='value'>Lydia Jonathan</div>
+              <div className='value'>{getEnqById?.source || "N/A"}</div>
             </div>
             <div className='staff-and-customer-details'>
               <div className='tag'>address:</div>
-              <div className='value'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex provident explicabo ipsum odit libero veniam tempora unde enim sit optio.</div>
+              <div className='value'>{getEnqById.customerDetails?.address || "N/A"}</div>
             </div>
           </div>
         </div>
       </div>
       <div className='follow-up'>Follow up message</div>
       <div className='form-area'>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
-            <Form.Control type="email" placeholder="input..." className='input' />
-            <Button variant="primary" type="submit" className='follow-up-btn' style={{ width: '', height: '48px', backgroundColor: '#00afef', }}>
-              <Link to='/drawer/dashboard' style={{ color: 'black', textDecoration: 'none', fontWeight: '700' }}> Send</Link>
+            <Form.Control type="text" placeholder="input..." className='input' name='actionTaken' value={followUpMessage.actionTaken} onChange={handleInputChange} />
+            <Button variant="primary" type="submit" className='follow-up-btn'>
+             Send
             </Button>
           </Form.Group>
         </Form>
@@ -177,7 +242,7 @@ const EnquiryDetails = () => {
            </ListGroup>
 
         <div className="tracking">
-        <ProgressBar now={now} label={`${now}%`} visuallyHidden className='status-bar'/>;
+        <ProgressBar now={now} label={`${now}%`} className='status-bar' />
         </div>
 
       </div>
