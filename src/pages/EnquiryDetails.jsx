@@ -16,14 +16,18 @@ import { Spinner } from 'react-bootstrap';
 const EnquiryDetails = () => {
   const { encodedId } = useParams();
   const realId = atob(encodedId);
-
+  const now = 60;
   const token = sessionStorage.getItem('authToken');
+  const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [showUpdate, setUpdateShow] = useState(false);
   const [showAction, setActionShow] = useState(false);
   const [showDelete, setDeleteShow] = useState(false);
   const [validated, setValidated] = useState(false);
   const [getEnqById, setGetEnqById] = useState(null); 
+  const [error, setError] = useState('');
+  const [getAllStaff, setAllStaff] = useState([]);
+  const [deleteEnq, setDeleteEnq] = useState({id:realId})
 
     //I am splitting slash / from the current date and I am replacing it with dash - :
   const formatDateWithDashes = (date = new Date()) => {
@@ -53,14 +57,93 @@ const EnquiryDetails = () => {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity()) {
-      createFollowUpMessage(); // Only create follow-up if form is valid
+      createFollowUpMessage();
     } else {
-      setValidated(true); // Show validation errors
+      setValidated(true);
     }
   };
-  
 
-  const now = 60;
+  const [createEnq, setCreatedEnq] = useState({
+    source: '',
+    description: '',
+    assignedStaff: '',
+    status: '',
+    followUpActions: [],
+    customerDetails: {
+      name: '',
+      email: '',
+      address: '',
+      phone: '',
+      course: '',
+      quarter: '',
+      session: '',
+    },
+  });
+  const sources = ['Email', 'Phone', 'Social Media', 'Physical Walk-in', 'WhatsApp', 'Indirect Referral'];
+
+  const status = ['New', 'Enrolled', 'Closed', 'Opt-Out', 'In Progress']
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCreatedEnq((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+  };
+
+  const handleCustomerDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setCreatedEnq((prev) => ({
+      ...prev,
+      customerDetails: {
+        ...prev.customerDetails,
+        [name]: value,
+      },
+    }));
+  };
+
+  const getAllStaffDetails = async () => {
+    const res = await axios.get(`${API_URL}/user/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (Array.isArray(res.data.data)) {
+      setAllStaff(res.data.data);
+    }
+  };
+
+
+  const handleStatusChange = (e) => {
+    const { value } = e.target;
+    setCreatedEnq((prev) => ({
+      ...prev,
+      status: value,
+    }));
+  };
+
+  const createEnquiries = async (event) => {
+    event.preventDefault();
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    if (!createEnq.status) {
+      setError("Please select a status for the enquiry.");
+      return;
+    }
+    try {
+      const res = await axios.post(`${API_URL}/user/enquiries`, createEnq, { headers });
+      alert('hi')
+      handleClose();
+      getAllEnquiries();
+    } catch (error) {
+      console.error("Error creating enquiry:", error);
+    }
+  };
+
 
   const getEnq = async () => {
     try {
@@ -77,7 +160,7 @@ const EnquiryDetails = () => {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputFollowUpChange = (e) => {
     const { name, value } = e.target;
     setFollowUpMessage((prev) => ({
       ...prev,
@@ -100,9 +183,34 @@ const EnquiryDetails = () => {
     }
   };
   
+  const deleteEnquiry = async() => {
+    try {
+      const res = axios.delete(`${API_URL}/user/delete/${realId}`, deleteEnq, {headers:{
+        Authorization:{
+          Bearer:`${token}`
+        }}
+      })
+      setDeleteEnq({id:''})
+      alert('deleted')
+      handleDeleteClose()
+    } catch (error) {
+      setError(error)
+      alert('Error deleting enquiry: ' + error.message); // Provide feedback in case of error
+
+    }
+  };
 
   useEffect(() => {
     getEnq();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await Promise.all([getAllStaffDetails()]);
+      setLoading(false);
+    };
+    fetchData();
   }, []);
 
   if (!getEnqById) {
@@ -191,7 +299,7 @@ const EnquiryDetails = () => {
       <div className='form-area'>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
-            <Form.Control type="text" placeholder="input..." className='input' name='actionTaken' value={followUpMessage.actionTaken} onChange={handleInputChange} />
+            <Form.Control type="text" placeholder="input..." className='input' name='actionTaken' value={followUpMessage.actionTaken} onChange={handleInputFollowUpChange} />
             <Button variant="primary" type="submit" className='follow-up-btn'>
              Send
             </Button>
@@ -255,25 +363,30 @@ const EnquiryDetails = () => {
         <Form>
           <Modal.Header>
             <Modal.Title>Create Enquiry</Modal.Title>
+            {error && <div className="text-danger">{error}</div>}
           </Modal.Header>
           <Modal.Body >
             <div className='modal-form'>
               <div>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Source</Form.Label>
-                  <Form.Select aria-label="Default select example">
-                    <option></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <Form.Select
+                    name="source"
+                    value={createEnq.source}
+                    onChange={handleInputChange}>
+                    <option value=""></option>
+                    {sources.map((source, index) => (
+                      <option key={index} value={source}>{source}</option>
+                    ))}
                   </Form.Select>
                 </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Description</Form.Label>
                   <Form.Control
                     as="textarea"
-                    placeholder=""
+                    name="description"
+                    value={createEnq.description}
+                    onChange={handleInputChange}
                     style={{ height: '100px' }}
                   />
                 </Form.Group>
@@ -281,21 +394,26 @@ const EnquiryDetails = () => {
                 </div>
               </div>
               <div>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Assigned staff</Form.Label>
-                  <Form.Select aria-label="Default select example">
-                    <option></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <Form.Select
+                    name="assignedStaff"
+                    value={createEnq.assignedStaff}
+                    onChange={handleInputChange}
+                  >
+                    <option value=""></option>
+                    {getAllStaff && getAllStaff.map((staff) => (
+                      <option key={staff.id} value={staff._id}>{staff.name}</option>
+                    ))}
                   </Form.Select>
                 </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Follow-up action</Form.Label>
                   <FloatingLabel controlId="floatingTextarea2" label="">
                     <Form.Control
                       as="textarea"
+                      value={createEnq.followUpActions.join(', ')}
+                      onChange={(e) => setCreatedEnq({ ...createEnq, followUpActions: e.target.value.split(', ') })}
                       style={{ height: '100px' }}
                     />
                   </FloatingLabel>
@@ -304,40 +422,58 @@ const EnquiryDetails = () => {
                 </div>
               </div>
             </div>
-            <Row className="mb-3">
-              {['checkbox'].map((type) => (
-                <div key={`inline-${type}`} className="mb-3">
-                  <Form.Check
-                    inline
-                    label="New"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-1`}
-                  />
-                  <Form.Check
-                    inline
-                    label="In-progress"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-2`}
-                  />
-                  <Form.Check
-                    inline
-                    label="Enrolled"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-3`}
-                  />
-                  <Form.Check
-                    inline
-                    label="Opt-out"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-4`}
-                  />
-                </div>
-              ))}
-            </Row>
+            <div className="mb-3">
+              <Form.Check
+                inline
+                label="New"
+                name="status"
+                type="radio"
+                id="inline-radio-1"
+                value="New"
+                checked={createEnq.status === 'New'}
+                onChange={handleStatusChange}
+              />
+              <Form.Check
+                inline
+                label="In Progress"
+                name="status"
+                type="radio"
+                id="inline-radio-2"
+                value="In Progress"
+                checked={createEnq.status === 'In Progress'}
+                onChange={handleStatusChange}
+              />
+              <Form.Check
+                inline
+                label="Enrolled"
+                name="status"
+                type="radio"
+                id="inline-radio-3"
+                value="Enrolled"
+                checked={createEnq.status === 'Enrolled'}
+                onChange={handleStatusChange}
+              />
+              <Form.Check
+                inline
+                label="Opt-out"
+                name="status"
+                type="radio"
+                id="inline-radio-4"
+                value="Opt-Out"
+                checked={createEnq.status === 'Opt-Out'}
+                onChange={handleStatusChange}
+              />
+              <Form.Check
+                inline
+                label="Closed"
+                name="status"
+                type="radio"
+                id="inline-radio-4"
+                value="Closed"
+                checked={createEnq.status === 'Closed'}
+                onChange={handleStatusChange}
+              />
+            </div>
             <div className='modal-form'>
               <div>
                 <Form.Group md="4" controlId="validationCustom01">
@@ -346,33 +482,36 @@ const EnquiryDetails = () => {
                     required
                     type="text"
                     placeholder="Name"
-                    defaultValue="Mark"
+                    name="name"
+                    value={createEnq.customerDetails.name}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Address</Form.Label>
                   <Form.Control
                     as="textarea"
                     placeholder="Leave a comment here"
+                    name="address"
+                    value={createEnq.customerDetails.address}
+                    onChange={handleCustomerDetailsChange}
                     style={{ height: '100px' }}
                   />
                 </Form.Group>
-
                 <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Qurater</Form.Label>
                   <Form.Control
                     required
                     type="text"
-                    placeholder=""
-                    defaultValue=""
+                    placeholder="quarter"
+                    name="quarter"
+                    value={createEnq.customerDetails.quarter}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
-
                 <div>
                 </div>
               </div>
-
               <div>
                 <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Email</Form.Label>
@@ -380,37 +519,42 @@ const EnquiryDetails = () => {
                     required
                     type="text"
                     placeholder="email"
-                    defaultValue="xyz@rework.com"
+                    name="email"
+                    value={createEnq.customerDetails.email}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
-
                 <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>phone</Form.Label>
                   <Form.Control
                     required
                     type="tel"
                     placeholder="+234"
-                    defaultValue="+234"
+                    name="phone"
+                    value={createEnq.customerDetails.phone}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
-
                 <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Course (optional)</Form.Label>
                   <Form.Control
                     required
                     type="text"
-                    placeholder=""
-                    defaultValue=""
+                    placeholder="course"
+                    name="course"
+                    value={createEnq.customerDetails.course}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
-
                 <Form.Group md="4" controlId="validationCustom01">
                   <Form.Label>Session (optional)</Form.Label>
                   <Form.Control
                     required
                     type="text"
-                    placeholder=""
-                    defaultValue=""
+                    placeholder="session"
+                    name="session"
+                    value={createEnq.customerDetails.session}
+                    onChange={handleCustomerDetailsChange}
                   />
                 </Form.Group>
                 <div>
@@ -419,7 +563,7 @@ const EnquiryDetails = () => {
             </div>
           </Modal.Body>
           <Modal.Footer className='modal-footer'>
-            <Button variant="primary" >
+            <Button variant="primary" onClick={createEnquiries} >
               save
             </Button>
             <Button variant="danger" onClick={handleClose}>cancel</Button>
@@ -472,10 +616,10 @@ const EnquiryDetails = () => {
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Select Action</Form.Label>
                 <Form.Select aria-label="Default select example">
-                  <option></option>
-                  <option value="1">New</option>
-                  <option value="2">In-progress</option>
-                  <option value="3">Enrolled</option>
+                  <option value=""></option>
+                  {status && status.map((status, index)=>(
+                    <option key={index} value={status}>{status}</option>
+                  ))}
                 </Form.Select>
               </Form.Group>
             </div>
@@ -498,8 +642,8 @@ const EnquiryDetails = () => {
             <div>Are you sure you want to delete this enquiry?</div>
           </Modal.Body>
           <Modal.Footer className='modal-footer'>
-            <Button variant="primary" >
-              save
+            <Button variant="primary" onClick={deleteEnquiry} >
+              Delete
             </Button>
             <Button variant="danger" onClick={handleDeleteClose}>cancel</Button>
           </Modal.Footer>

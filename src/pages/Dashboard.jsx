@@ -14,6 +14,7 @@ import { API_URL } from "../config";
 import '../assets/styles/pages/dashboard.css';
 import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 const DashboardCard = ({ title, count, color, icon }) => (
   <Card className="dashboard-card">
@@ -34,9 +35,7 @@ const EnquiryRow = ({ enquiry }) => {
   const encodedId = btoa(enquiry._id); //btoa for base64 encoding
   return (
     <tr key={enquiry._id}>
-      <Link className='dash-link' to={`/users/enquiries/${encodedId}`}>
-        <td>{enquiry.source || 'N/A'}</td>
-      </Link>
+      <td>{enquiry.source || 'N/A'}</td>
       <td>{enquiry.customerDetails?.name || 'N/A'}</td>
       <td>{enquiry.customerDetails?.email}</td>
       <td>{enquiry.status}</td>
@@ -46,10 +45,13 @@ const EnquiryRow = ({ enquiry }) => {
       <td>
         <Dropdown className="table-drop-down">
           <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-            View
           </Dropdown.Toggle>
           <Dropdown.Menu className="drop-down-menu">
-            <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
+            <Link className='dash-link' to={`/users/enquiries/${encodedId}`}>
+              <Dropdown.Item href="#/action-1">
+              View more     
+              </Dropdown.Item>
+               </Link>
           </Dropdown.Menu>
         </Dropdown>
       </td>
@@ -82,6 +84,15 @@ const Dashboard = () => {
       session: '',
     },
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+
+  const indexOfLastEnquiry = currentPage * itemsPerPage;
+  const indexOfFirstEnquiry = indexOfLastEnquiry - itemsPerPage;
+  const currentEnquiries = getAllEnq.slice(indexOfFirstEnquiry, indexOfLastEnquiry);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+
   const sources = ['Email', 'Phone', 'Social Media', 'Physical Walk-in', 'WhatsApp', 'Indirect Referral'];
 
   const handleInputChange = (e) => {
@@ -203,11 +214,27 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {getAllEnq.map(enq => <EnquiryRow key={enq._id} enquiry={enq} />)}
+              {currentEnquiries.map(enq => <EnquiryRow key={enq._id} enquiry={enq} />)}
               </tbody>
             </Table>
           )}
         </div>
+        <div className="pagination">
+          <Button 
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
+            disabled={currentPage === 1} // Disables if on the first page
+          >
+            <FaArrowLeft size={20} />
+          </Button>
+          <span>Page {currentPage} of {Math.ceil(getAllEnq.length / itemsPerPage)}</span>
+          <Button 
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(getAllEnq.length / itemsPerPage)))} 
+            disabled={currentPage === Math.ceil(getAllEnq.length / itemsPerPage)} // Disables if on the last page
+          >
+            <FaArrowRight size={20} />
+          </Button>
+        </div>
+
         <div className="second-enquiries-header">
           <div className="flex-between">
             <div className="header-title-bold">Recent Enquiries</div>
@@ -236,11 +263,11 @@ const Dashboard = () => {
                   <td>Full-stack development</td>
                   <td> <Dropdown className="table-drop-down">
                     <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                      view
+
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu className="drop-down-menu">
-                      <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
+                      <Dropdown.Item href="#/action-1">View</Dropdown.Item>
                       <Dropdown.Item href="#/action-2"></Dropdown.Item>
                       <Dropdown.Item href="#/action-3"></Dropdown.Item>
                     </Dropdown.Menu>

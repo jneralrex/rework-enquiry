@@ -173,7 +173,7 @@ td {
 
 .drop-down-menu {
   margin-top: 5px !important;
-  margin-left: -11px !important;
+  margin-right: -5px !important;
   text-align: center !important;
   font-size: 11px !important;
 }

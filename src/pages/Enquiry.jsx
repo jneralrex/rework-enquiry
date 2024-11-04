@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; 
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Card from "react-bootstrap/Card";
-import { FiPlus, FiFilter, FiArrowRight } from "react-icons/fi";
+import { FiPlus, FiFilter, FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { CiExport } from "react-icons/ci";
 import '../assets/styles/pages/allenquiries.css';
 import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../config";
 
@@ -18,17 +17,19 @@ const Enquiry = () => {
   const navigate = useNavigate();
   const [getAllEnq, setAllEnq] = useState([]);
   const token = sessionStorage.getItem('authToken');
-
-
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [getAllStaff, setAllStaff] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
   // Slicing data for pagination
-  const displayedData = getAllEnq.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-  
+  const indexOfLastEnquiry = currentPage * itemsPerPage;
+  const indexOfFirstEnquiry = indexOfLastEnquiry - itemsPerPage;
+  const currentEnquiries = getAllEnq.slice(indexOfFirstEnquiry, indexOfLastEnquiry);
 
   const getAllEnquiries = async () => {
     const res = await axios.get(`${API_URL}/user/enquiries`, {
@@ -42,15 +43,114 @@ const Enquiry = () => {
     }
   };
 
-  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [createEnq, setCreatedEnq] = useState({
+    source: '',
+    description: '',
+    assignedStaff: '',
+    status: '',
+    followUpActions: [],
+    customerDetails: {
+      name: '',
+      email: '',
+      address: '',
+      phone: '',
+      course: '',
+      quarter: '',
+      session: '',
+    },
+  });
 
+  const sources = ['Email', 'Phone', 'Social Media', 'Physical Walk-in', 'WhatsApp', 'Indirect Referral'];
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCreatedEnq((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleCustomerDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setCreatedEnq((prev) => ({
+      ...prev,
+      customerDetails: {
+        ...prev.customerDetails,
+        [name]: value,
+      },
+    }));
+  };
+
+  const getAllStaffDetails = async () => {
+    const res = await axios.get(`${API_URL}/user/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (Array.isArray(res.data.data)) {
+      setAllStaff(res.data.data);
+    }
+  };
+
+  const handleStatusChange = (e) => {
+    const { value } = e.target;
+    setCreatedEnq((prev) => ({
+      ...prev,
+      status: value,
+    }));
+  };
+
+  const createEnquiries = async (event) => {
+    event.preventDefault();
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+
+    if (!createEnq.status) {
+      setError("Please select a status for the enquiry.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(`${API_URL}/user/enquiries`, createEnq, { headers });
+      handleClose();
+      setCreatedEnq({
+        source: '',
+        description: '',
+        assignedStaff: '',
+        status: '',
+        followUpActions: [],
+        customerDetails: {
+          name: '',
+          email: '',
+          address: '',
+          phone: '',
+          course: '',
+          quarter: '',
+          session: '',
+        },
+      });
+      getAllEnquiries();
+    } catch (error) {
+      console.error("Error creating enquiry:", error);
+      setError("Failed to create enquiry. Please try again.");
+    }
+  };
 
   useEffect(() => {
     getAllEnquiries();
+    getAllStaffDetails();
   }, []);
+
+  const totalEnquiries = getAllEnq.length;
+  const newEnquiries = getAllEnq.filter(enq => enq.status === 'New').length;
+  const pendingEnquiries = getAllEnq.filter(enq => enq.status === 'In Progress').length;
+  const closedEnquiries = getAllEnq.filter(enq => enq.status === 'Closed').length;
+  const optOut = getAllEnq.filter(enq => enq.status === 'Opt-Out').length;
+  const enrolled = getAllEnq.filter(enq => enq.status === 'Enrolled').length;
+
   return (
     <div className="con">
 
@@ -59,31 +159,31 @@ const Enquiry = () => {
           <Card.Body className="card-body">
             <div className="card-title">New</div>
           </Card.Body>
-          <p className="card-number">567</p>
+          <p className="card-number">{newEnquiries}</p>
         </Card>
         <Card className="custom-card">
           <Card.Body className="card-body">
             <div className="card-title">In-progress</div>
           </Card.Body>
-          <p className="card-number">20</p>
+          <p className="card-number">{pendingEnquiries}</p>
         </Card>
         <Card className="custom-card">
           <Card.Body className="card-body">
             <div className="card-title">Enrolled</div>
           </Card.Body>
-          <p className="card-number">120</p>
+          <p className="card-number">{enrolled}</p>
         </Card>
         <Card className="custom-card">
           <Card.Body className="card-body">
-            <div className="card-title">OPt-out</div>
+            <div className="card-title">Opt-out</div>
           </Card.Body>
-          <p className="card-number">10</p>
+          <p className="card-number">{optOut}</p>
         </Card>
         <Card className="custom-card">
           <Card.Body className="card-body">
             <div className="card-title">Closed</div>
           </Card.Body>
-          <p className="card-number">5</p>
+          <p className="card-number">{closedEnquiries}</p>
         </Card>
       </div>
       <div className="button-group">
@@ -116,12 +216,12 @@ const Enquiry = () => {
             </tr>
           </thead>
           <tbody>
-            {getAllEnq.length === 0 ? (
+            {currentEnquiries.length === 0 ? (
               <tr>
                 <td colSpan="7">No enquiries available.</td>
               </tr>
             ) : (
-              getAllEnq.map((enqDetails) => (
+              currentEnquiries.map((enqDetails) => (
                 <tr key={enqDetails._id}>
                   <td>{enqDetails?.source}</td>
                   <td>{enqDetails?.description || 'N/A'}</td>
@@ -136,8 +236,6 @@ const Enquiry = () => {
                       </Dropdown.Toggle>
                       <Dropdown.Menu className="drop-down-menu">
                         <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2"></Dropdown.Item>
-                        <Dropdown.Item href="#/action-3"></Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
                   </td>
@@ -150,201 +248,65 @@ const Enquiry = () => {
 
       {/* Pagination Controls */}
       <div className="pagination-controls">
-  <div className="next-page-pointer">
-    <div>Next</div>
-    <div><FiArrowRight /></div>
-  </div>
-  <div>
-    {Array(Math.ceil(getAllEnq.length / itemsPerPage)).fill(null).map((_, idx) => (
-      <button
-        key={idx}
-        className={`page-button ${currentPage === idx + 1 ? 'active' : ''}`}
-        onClick={() => handlePageChange(idx + 1)}
-      >
-        {idx + 1}
-      </button>
-    ))}
-  </div>
-</div>
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Form>
-          <Modal.Header>
-            <Modal.Title>Create Enquiry</Modal.Title>
-          </Modal.Header>
-          <Modal.Body >
-            <div className='modal-form'>
-              <div>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Source</Form.Label>
-                  <Form.Select aria-label="Default select example">
-                    <option></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </Form.Select>
-                </Form.Group>
+        <div className="prev-page-pointer" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}>
+          <FiArrowLeft />
+          <div>Previous</div>
+        </div>
+        <div className="page-numbers">
+          Page {currentPage} of {Math.ceil(totalEnquiries / itemsPerPage)}
+        </div>
+        <div className="next-page-pointer" onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(totalEnquiries / itemsPerPage)))}>
+          <div>Next</div>
+          <FiArrowRight />
+        </div>
+      </div>
 
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    placeholder=""
-                    style={{ height: '100px' }}
-                  />
-                </Form.Group>
-                <div>
-                </div>
-              </div>
-              <div>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Assigned staff</Form.Label>
-                  <Form.Select aria-label="Default select example">
-                    <option></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </Form.Select>
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Follow-up action</Form.Label>
-                  <FloatingLabel controlId="floatingTextarea2" label="">
-                    <Form.Control
-                      as="textarea"
-                      style={{ height: '100px' }}
-                    />
-                  </FloatingLabel>
-                </Form.Group>
-                <div>
-                </div>
-              </div>
-            </div>
-            <Row className="mb-3">
-              {['checkbox'].map((type) => (
-                <div key={`inline-${type}`} className="mb-3">
-                  <Form.Check
-                    inline
-                    label="New"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-1`}
-                  />
-                  <Form.Check
-                    inline
-                    label="In-progress"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-2`}
-                  />
-                  <Form.Check
-                    inline
-                    label="Enrolled"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-3`}
-                  />
-                  <Form.Check
-                    inline
-                    label="Opt-out"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-4`}
-                  />
-                </div>
-              ))}
-            </Row>
-            <div className='modal-form'>
-              <div>
-                <Form.Group md="4" controlId="validationCustom01">
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="Name"
-                    defaultValue="Mark"
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Address</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    placeholder="Leave a comment here"
-                    style={{ height: '100px' }}
-                  />
-                </Form.Group>
-
-                <Form.Group md="4" controlId="validationCustom01">
-                  <Form.Label>Qurater</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder=""
-                    defaultValue=""
-                  />
-                </Form.Group>
-
-                <div>
-                </div>
-              </div>
-
-              <div>
-                <Form.Group md="4" controlId="validationCustom01">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="email"
-                    defaultValue="xyz@rework.com"
-                  />
-                </Form.Group>
-
-                <Form.Group md="4" controlId="validationCustom01">
-                  <Form.Label>phone</Form.Label>
-                  <Form.Control
-                    required
-                    type="tel"
-                    placeholder="+234"
-                    defaultValue="+234"
-                  />
-                </Form.Group>
-
-                <Form.Group md="4" controlId="validationCustom01">
-                  <Form.Label>Course (optional)</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder=""
-                    defaultValue=""
-                  />
-                </Form.Group>
-
-                <Form.Group md="4" controlId="validationCustom01">
-                  <Form.Label>Session (optional)</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder=""
-                    defaultValue=""
-                  />
-                </Form.Group>
-                <div>
-                </div>
-              </div>
-            </div>
-          </Modal.Body>
-          <Modal.Footer className='modal-footer'>
-            <Button variant="primary" >
-              save
-            </Button>
-            <Button variant="danger" onClick={handleClose}>cancel</Button>
-          </Modal.Footer>
-        </Form>
+      {/* Modal for creating enquiry */}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create New Enquiry</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={createEnquiries}>
+            <FloatingLabel controlId="floatingSelect" label="Source">
+              <Form.Select onChange={handleInputChange} name="source">
+                <option>Select Source</option>
+                {sources.map((src, index) => (
+                  <option key={index} value={src}>{src}</option>
+                ))}
+              </Form.Select>
+            </FloatingLabel>
+            <FloatingLabel controlId="floatingTextarea2" label="Description">
+              <Form.Control
+                as="textarea"
+                onChange={handleInputChange}
+                name="description"
+                placeholder="Leave a description here"
+                style={{ height: '100px' }}
+              />
+            </FloatingLabel>
+            <FloatingLabel controlId="floatingSelect" label="Assigned Staff">
+              <Form.Select onChange={handleInputChange} name="assignedStaff">
+                <option>Select Staff</option>
+                {getAllStaff.map((staff, index) => (
+                  <option key={index} value={staff._id}>{staff.name}</option>
+                ))}
+              </Form.Select>
+            </FloatingLabel>
+            <FloatingLabel controlId="floatingSelect" label="Status">
+              <Form.Select onChange={handleStatusChange} name="status">
+                <option>Select Status</option>
+                <option value="New">New</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Closed">Closed</option>
+                <option value="Opt-Out">Opt-Out</option>
+                <option value="Enrolled">Enrolled</option>
+              </Form.Select>
+            </FloatingLabel>
+            <Button variant="primary" type="submit">Create Enquiry</Button>
+          </form>
+          {error && <p className="error-message">{error}</p>}
+        </Modal.Body>
       </Modal>
     </div>
   );
