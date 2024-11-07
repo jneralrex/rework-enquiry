@@ -11,7 +11,7 @@ const MyNav = ({ handleClose }) => {
   return (
     <>
       <NavLink
-        to='/dashboard/dashboard'
+        to='/dashboard/home'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose} 
       >
