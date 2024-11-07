@@ -20,7 +20,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path='/' element={<Login />} />
-      <Route path='users' element={<Drawer />}>
+      <Route path='dashboard' element={<Drawer />}>
         <Route path='dashboard' element={<Dashboard />} />
         <Route path='enquiry' element={<Enquiry />} />
         <Route path='follow-up' element={<Followups />} />
@@ -28,7 +28,7 @@ const router = createBrowserRouter(
         <Route path='customer' element={<Customer />} />
         <Route path='notifications' element={<Notification />} />
         <Route path='user-management' element={<UserManagement />} />
-        <Route path='user-management/user-details' element={<UserDetails />} />
+        <Route path='user-management/user-details/:encodedId' element={<UserDetails />} />
         <Route path='change-password' element={<ChangePassword />} />
       </Route>
     </Route>

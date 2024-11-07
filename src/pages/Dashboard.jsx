@@ -47,8 +47,8 @@ const EnquiryRow = ({ enquiry }) => {
           <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
           </Dropdown.Toggle>
           <Dropdown.Menu className="drop-down-menu">
-            <Link className='dash-link' to={`/users/enquiries/${encodedId}`}>
-              <Dropdown.Item href="#/action-1">
+            <Link className='dash-link' to={`/dashboard/enquiries/${encodedId}`}>
+              <Dropdown.Item href="#/action">
               View more     
               </Dropdown.Item>
                </Link>
@@ -222,14 +222,14 @@ const Dashboard = () => {
         <div className="pagination">
           <Button 
             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
-            disabled={currentPage === 1} // Disables if on the first page
+            disabled={currentPage === 1} 
           >
             <FaArrowLeft size={20} />
           </Button>
           <span>Page {currentPage} of {Math.ceil(getAllEnq.length / itemsPerPage)}</span>
           <Button 
             onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(getAllEnq.length / itemsPerPage)))} 
-            disabled={currentPage === Math.ceil(getAllEnq.length / itemsPerPage)} // Disables if on the last page
+            disabled={currentPage === Math.ceil(getAllEnq.length / itemsPerPage)} 
           >
             <FaArrowRight size={20} />
           </Button>

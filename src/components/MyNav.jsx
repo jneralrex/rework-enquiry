@@ -11,42 +11,42 @@ const MyNav = ({ handleClose }) => {
   return (
     <>
       <NavLink
-        to='/users/dashboard'
+        to='/dashboard/dashboard'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
-        onClick={handleClose} // Close the drawer
+        onClick={handleClose} 
       >
         <FiHome /> Dashboard
       </NavLink>
       <NavLink
-        to='/users/enquiry'
+        to='/dashboard/enquiry'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
         <LuUsers /> Enquiries
       </NavLink>
       <NavLink
-        to='/users/follow-up'
+        to='/dashboard/follow-up'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
         <FiBook /> Follow ups
       </NavLink>
       <NavLink
-        to='/users/customer'
+        to='/dashboard/customer'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
         <RiCustomerService2Fill /> Customer
       </NavLink>
       <NavLink
-        to='/users/user-management'
+        to='/dashboard/user-management'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
         <HiOutlineShoppingBag /> User management
       </NavLink>
       <NavLink
-        to='/users/notifications'
+        to='/dashboard/notifications'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
@@ -54,14 +54,14 @@ const MyNav = ({ handleClose }) => {
       </NavLink>
       <hr className="offcanvas-divider" />
       <NavLink
-        to='/users/change-password'
+        to='/dashboard/change-password'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
         <BiUserCheck /> Change password
       </NavLink>
       <NavLink
-        to='/drawer/logout'
+        to='/dashboard/logout'
         className={({ isActive }) => (isActive ? "link active-link" : "link")}
         onClick={handleClose}
       >
