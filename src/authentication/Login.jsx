@@ -7,10 +7,12 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; 
 import { API_URL } from "../config";
+import { Spinner } from "react-bootstrap";
 
 const Login = () => {
     const [validated, setValidated] = useState(false);
     const [login, setLogin] = useState({ email: '', password: '' });
+    const [loading, setLoading] = useState(false);  
     const navigate = useNavigate(); 
 
     const handleSubmit = (event) => {
@@ -32,6 +34,7 @@ const Login = () => {
     };
 
     const allowLogin = async () => {
+        setLoading(true);  
         try {
             const res = await axios.post(`${API_URL}/auth/login`, login);
             const token = res.data.token;
@@ -40,6 +43,7 @@ const Login = () => {
         } catch (error) {
             console.error("Login failed", error);
         }
+        setLoading(false);  
     };
 
     return (
@@ -153,8 +157,13 @@ const Login = () => {
                                 </Form.Control.Feedback>
                             </Form.Group>
 
-                            <Button variant="primary" type="submit" style={{ width: '100%', height: '48px', backgroundColor: '#00afef' }}>
-                                Log in
+                            <Button
+                                variant="primary"
+                                type="submit"
+                                style={{ width: '100%', height: '48px', backgroundColor: '#00afef' }}
+                                disabled={loading}  
+                            >
+                                {loading ?   <Spinner animation="border" variant="primary" />: "Log in"} 
                             </Button>
                         </Form>
                     </div>
