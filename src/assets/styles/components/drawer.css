@@ -124,7 +124,7 @@
   /* margin-left: 200px; */
 }
 .dropbtn-notification{
-  margin-left: 50px;
+  margin-left: 500px;
 }
 .dropdown-notification{
   position: relative;
@@ -210,6 +210,9 @@
     border-bottom: 2px solid #eaeaea;
     width: 100%;
     text-align: center;
+  }
+  .dropbtn-notification{
+    margin-left: 200px;
   }
 }
 

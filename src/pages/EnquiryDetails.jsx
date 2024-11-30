@@ -8,7 +8,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { SlOptionsVertical } from "react-icons/sl";
-import ProgressBar from 'react-bootstrap/ProgressBar';
+// import ProgressBar from 'react-bootstrap/ProgressBar';
 import axios from 'axios';
 import { API_URL } from '../config';
 import { Spinner } from 'react-bootstrap';
@@ -24,21 +24,21 @@ const EnquiryDetails = () => {
   const [showAction, setActionShow] = useState(false);
   const [showDelete, setDeleteShow] = useState(false);
   const [validated, setValidated] = useState(false);
-  const [getEnqById, setGetEnqById] = useState(null); 
+  const [getEnqById, setGetEnqById] = useState(null);
   const [error, setError] = useState('');
   const [getAllStaff, setAllStaff] = useState([]);
-  const [deleteEnq, setDeleteEnq] = useState({id:realId})
+  const [deleteEnq, setDeleteEnq] = useState({ id: realId })
 
-    //I am splitting slash / from the current date and I am replacing it with dash - :
+  //I am splitting slash / from the current date and I am replacing it with dash - :
   const formatDateWithDashes = (date = new Date()) => {
     return date.toLocaleDateString('en-GB').split('/').join('-');
   };
-  
+
   //I am rendering date to the format that is accepted by the API:
   const formattedDateWithDashes = formatDateWithDashes();
-  
+
   const [followUpMessage, setFollowUpMessage] = useState({
-    enquiry: realId, 
+    enquiry: realId,
     date: formattedDateWithDashes,
     actionTaken: '',
     currentStaff: ''
@@ -115,7 +115,6 @@ const EnquiryDetails = () => {
     }
   };
 
-
   const handleStatusChange = (e) => {
     const { value } = e.target;
     setCreatedEnq((prev) => ({
@@ -182,15 +181,17 @@ const EnquiryDetails = () => {
       // Optional: Set an error state to display a user-friendly message
     }
   };
-  
-  const deleteEnquiry = async() => {
+
+  const deleteEnquiry = async () => {
     try {
-      const res = axios.delete(`${API_URL}/user/delete/${realId}`, deleteEnq, {headers:{
-        Authorization:{
-          Bearer:`${token}`
-        }}
+      const res = axios.delete(`${API_URL}/user/delete/${realId}`, deleteEnq, {
+        headers: {
+          Authorization: {
+            Bearer: `${token}`
+          }
+        }
       })
-      setDeleteEnq({id:''})
+      setDeleteEnq({ id: '' })
       alert('deleted')
       handleDeleteClose()
     } catch (error) {
@@ -217,17 +218,16 @@ const EnquiryDetails = () => {
     return <Spinner animation="border" variant="primary" />;
   }
 
-  console.log(followUpMessage)
 
   return (
     <div className="enquiry-container">
       <div className='header-main'>
-        <div className='question-and-details'>
+        {/* <div className='question-and-details'>
           <div className='question'>{getEnqById.question || "Loading question..."}</div>
           <div className='author'>
             Written by a Rework academy staff, Updated on { new Date(getEnqById.createdAt).toLocaleString() || "date not available"}
           </div>
-        </div>
+        </div> */}
         <div className="dropdown-enq">
           <div className="dropbtn-enq">
             <SlOptionsVertical size={20} style={{ color: 'black' }} />
@@ -244,7 +244,7 @@ const EnquiryDetails = () => {
       <div className='description-details'>{getEnqById.description || "No description available"}</div>
       <div className='staff-and-customer'>
         <div className='staff'>
-          <div className='staff-and-customer-header'>Current Staff Details</div>
+          <div className='staff-header'>Current Staff Details</div>
           <div className='details'>
             <div className='staff-and-customer-details'>
               <div className='tag'>Name:</div>
@@ -262,7 +262,7 @@ const EnquiryDetails = () => {
         </div>
 
         <div className='customer'>
-          <div className='staff-and-customer-header'>Customer Details</div>
+          <div className='customer-header'>Customer Details</div>
           <div className='details'>
             <div className='staff-and-customer-details'>
               <div className='tag'>name:</div>
@@ -299,9 +299,9 @@ const EnquiryDetails = () => {
       <div className='form-area'>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
-            <Form.Control type="text" placeholder="input..." className='input' name='actionTaken' value={followUpMessage.actionTaken} onChange={handleInputFollowUpChange} />
+            <Form.Control type="text" placeholder="message..." className='input' name='actionTaken' value={followUpMessage.actionTaken} onChange={handleInputFollowUpChange} />
             <Button variant="primary" type="submit" className='follow-up-btn'>
-             Send
+              Send
             </Button>
           </Form.Group>
         </Form>
@@ -310,7 +310,7 @@ const EnquiryDetails = () => {
         <ListGroup>
           <div className='item-div'>
             <ListGroup.Item className='list-item'>
-            <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.'/>
+              <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.' />
               <div className='middle'>
                 <div className='list-item-name'>Diana Floss - Admin</div>
                 <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
@@ -323,34 +323,74 @@ const EnquiryDetails = () => {
           </div>
           <div className='item-div'>
             <ListGroup.Item className='list-item'>
-            <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.'/>
-            <div className='middle'>
+              <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.' />
+              <div className='middle'>
                 <div className='list-item-name'>Diana Floss - Admin</div>
                 <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
               </div>
               <div>
-              <div className='list-item-date'>23-09-2024</div>
-              <div className='time'>04:09 PM</div>
+                <div className='list-item-date'>23-09-2024</div>
+                <div className='time'>04:09 PM</div>
               </div>
             </ListGroup.Item>
           </div>
           <div className='item-div'>
             <ListGroup.Item className='list-item'>
-            <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.'/>
-            <div className='middle'>
+              <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.' />
+              <div className='middle'>
                 <div className='list-item-name'>Diana Floss - Admin</div>
                 <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
               </div>
               <div>
-              <div className='list-item-date'>23-09-2024</div>
-              <div className='time'>04:09 PM</div>
+                <div className='list-item-date'>23-09-2024</div>
+                <div className='time'>04:09 PM</div>
               </div>
             </ListGroup.Item>
-          </div>   
-           </ListGroup>
+          </div>
+        </ListGroup>
 
         <div className="tracking">
-        <ProgressBar now={now} label={`${now}%`} className='status-bar' />
+          <div
+            style={{
+              backgroundColor: getEnqById?.status === "New" ? "#0d6efd" : "transparent",
+              color: getEnqById?.status === "New" ? "white" : "grey"
+
+            }}
+          >
+            New
+          </div>
+          <div
+            style={{
+              backgroundColor: getEnqById?.status === "In Progress" ? "#0d6efd" : "transparent",
+              color: getEnqById?.status === "In Progress" ? "white" : "grey"
+            }}
+          >
+            In Progress
+          </div>
+          <div
+            style={{
+              backgroundColor: getEnqById?.status === "Enrolled" ? "#0d6efd" : "transparent",
+              color: getEnqById?.status === "Enrolled" ? "white" : "grey"
+            }}
+          >
+            Enrolled
+          </div>
+          <div
+            style={{
+              backgroundColor: getEnqById?.status === "Opt-Out" ? "#0d6efd" : "transparent",
+              color: getEnqById?.status === "Opt-Out" ? "white" : "grey"
+            }}
+          >
+            Opt-Out
+          </div>
+          <div
+            style={{
+              backgroundColor: getEnqById?.status === "Closed" ? "#0d6efd" : "transparent",
+              color: getEnqById?.status === "Closed" ? "white" : "grey"
+            }}
+          >
+            Closed
+          </div>
         </div>
 
       </div>
@@ -394,7 +434,7 @@ const EnquiryDetails = () => {
                 </div>
               </div>
               <div>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Assigned staff</Form.Label>
                   <Form.Select
                     name="assignedStaff"
@@ -617,7 +657,7 @@ const EnquiryDetails = () => {
                 <Form.Label>Select Action</Form.Label>
                 <Form.Select aria-label="Default select example">
                   <option value=""></option>
-                  {status && status.map((status, index)=>(
+                  {status && status.map((status, index) => (
                     <option key={index} value={status}>{status}</option>
                   ))}
                 </Form.Select>
