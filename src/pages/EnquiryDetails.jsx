@@ -356,13 +356,13 @@ const EnquiryDetails = () => {
         </Form>
       </div>
       <div className="progress-and-message">
-        <ListGroup>
+        <div className="message-holder">
           {allFollowUpById && allFollowUpById.length > 0 ? (
             allFollowUpById.map((followUp) => (
               <div className="item-div" key={followUp._id}>
                 {" "}
                 {/* Add unique key */}
-                <ListGroup.Item className="list-item">
+                <div className="list-item">
                   <div className="middle">
                     <div className="middle-item">
                       <div className="list-item-name">
@@ -378,13 +378,13 @@ const EnquiryDetails = () => {
                     <div className="list-item-msg">{followUp?.actionTaken}</div>
                   </div>
                   <div></div>
-                </ListGroup.Item>
+                </div>
               </div>
             ))
           ) : (
             <div>No Follow Up Action yet</div>
           )}
-        </ListGroup>
+        </div>
 
         <div className="tracking">
           <div
