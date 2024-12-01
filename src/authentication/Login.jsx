@@ -1,50 +1,47 @@
+import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import logo from "../assets/images/reworklogo.png";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom"; 
-import { API_URL } from "../config";
 import { Spinner } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { allowLogin } from "../redux/user/UserSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const { loading, error } = useSelector((state) => state.user); // Map state from Redux
+    const user = useSelector((state) => state.user); // Map state from Redux
+
+  
     const [validated, setValidated] = useState(false);
-    const [login, setLogin] = useState({ email: '', password: '' });
-    const [loading, setLoading] = useState(false);  
-    const navigate = useNavigate(); 
-
+    const [login, setLogin] = useState({ email: "", password: "" });
+  
+    const navigate = useNavigate();
+  
     const handleSubmit = (event) => {
-        event.preventDefault(); 
-        const form = event.currentTarget;
-
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
-        } else {
-            allowLogin(); 
-        }
-
-        setValidated(true);
+      event.preventDefault();
+      const form = event.currentTarget;
+  
+      if (form.checkValidity() === false) {
+        event.stopPropagation();
+      } else {
+        dispatch(allowLogin(login))
+          .unwrap()
+          .then(() => navigate("/dashboard/home")) // Navigate on success
+          .catch((err) => console.error("Login failed:", err)); // Handle error
+      }
+  
+      setValidated(true);
     };
-
+  
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setLogin({ ...login, [name]: value }); 
+      const { name, value } = event.target;
+      setLogin({ ...login, [name]: value });
     };
-
-    const allowLogin = async () => {
-        setLoading(true);  
-        try {
-            const res = await axios.post(`${API_URL}/auth/login`, login);
-            const token = res.data.token;
-            sessionStorage.setItem('authToken', token);
-            navigate('/dashboard/home');
-        } catch (error) {
-            console.error("Login failed", error);
-        }
-        setLoading(false);  
-    };
+  
+    console.log(user)
 
     return (
         <Container
@@ -65,7 +62,7 @@ const Login = () => {
                     borderRadius: "10px",
                 }}
             >
-                <div style={{ top: '0' }}>
+                <div style={{ top: "0" }}>
                     <div
                         style={{
                             width: "100%",
@@ -75,57 +72,11 @@ const Login = () => {
                             flexDirection: "column",
                         }}
                     >
-                        <img src={logo} alt="Rework logo" style={{ marginBottom: '15px' }} />
-                        <div
-                            style={{
-                                width: "314px",
-                                height: "24px",
-                                textAlign: "center",
-                                alignItems: "center",
-                                opacity: "70%",
-                                fontWeight: "700",
-                                fontSize: "19px",
-                                lineHeight: "23.85px",
-                                color: "#A4A6B3",
-                                letterSpacing: "0.4px",
-                            }}
-                        >
-                            REWORK MANAGEMENT
-                        </div>
-                        <div
-                            style={{
-                                width: "314px",
-                                height: "30px",
-                                marginTop: "15px",
-                                textAlign: "center",
-                                alignItems: "center",
-                                fontWeight: "700",
-                                fontSize: "24px",
-                                lineHeight: "30.12px",
-                                color: "#252733",
-                                letterSpacing: "0.3px",
-                            }}
-                        >
-                            ADMIN LOGIN
-                        </div>
-                        <div
-                            style={{
-                                width: "314px",
-                                height: "20px",
-                                marginTop: "10px",
-                                textAlign: "center",
-                                alignItems: "center",
-                                fontWeight: "400",
-                                fontSize: "14px",
-                                lineHeight: "20px",
-                                color: "#9fa2ba",
-                                letterSpacing: "0.3px",
-                            }}
-                        >
-                            Enter your email and password
-                        </div>
+                        <img src={logo} alt="Rework logo" style={{ marginBottom: "15px" }} />
+                        <h2>ADMIN LOGIN</h2>
+                        <p>Enter your email and password</p>
                     </div>
-                    <div style={{ margin: '50px' }}>
+                    <div style={{ margin: "50px" }}>
                         <Form noValidate validated={validated} onSubmit={handleSubmit}>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Email address</Form.Label>
@@ -157,13 +108,15 @@ const Login = () => {
                                 </Form.Control.Feedback>
                             </Form.Group>
 
+                            {error && <p style={{ color: "red" }}>{error}</p>}
+
                             <Button
                                 variant="primary"
                                 type="submit"
-                                style={{ width: '100%', height: '48px', backgroundColor: '#00afef' }}
-                                disabled={loading}  
+                                style={{ width: "100%", height: "48px", backgroundColor: "#00afef" }}
+                                disabled={loading}
                             >
-                                {loading ?   <Spinner animation="border" variant="primary" />: "Log in"} 
+                                {loading ? <Spinner animation="border" variant="primary" /> : "Log in"}
                             </Button>
                         </Form>
                     </div>

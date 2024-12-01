@@ -103,11 +103,7 @@ const UserDetails = () => {
                         {userDetails ? (
                             <>
                                 <div className="details-header">
-                                    <Image
-                                        src={userDetails.image || "https://example.com/default-avatar.jpg"}
-                                        roundedCircle
-                                        className="profile-image"
-                                    />
+                                   
                                     <div className="details-inner">
                                         <div>
                                             <div className="profile-name">{userDetails.name}</div>
@@ -153,11 +149,6 @@ const UserDetails = () => {
 
             <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
-                    <Image
-                        src={userDetails?.image || "https://example.com/default-avatar.jpg"}
-                        roundedCircle
-                        className="profile-image"
-                    />
                     <div>
                         <div className="profile-name">{userDetails?.name}</div>
                         <div className="profile-role">{userDetails?.role?.name}</div>
@@ -222,7 +213,7 @@ const UserDetails = () => {
                         </Row>
 
                         <Modal.Footer className="edit-modal-footer">
-                            <Button variant="danger" className="delete-btn">
+                            <Button variant="danger" className="delete-btn text-white">
                                 <FiTrash /> Delete User
                             </Button>
                             <div className="btns">

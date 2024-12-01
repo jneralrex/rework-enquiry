@@ -103,20 +103,7 @@ const UserManagement = () => {
               {displayedData.map((user) => (
                 <tr key={user._id}>
                   <td className="flex-td">
-                    {/* <Form>
-                      <Form.Check
-                        inline
-                        name="group1"
-                        type="checkbox"
-                        id={`inline-checkbox-${user._id}`}
-                      />
-                    </Form> */}
                     <div className="flex-td-div">
-                      <Image
-                        src={user.image || '/default-avatar.jpg'} // Fallback to default image
-                        roundedCircle
-                        className="student-image"
-                      />
                       {user.name}
                     </div>
                   </td>

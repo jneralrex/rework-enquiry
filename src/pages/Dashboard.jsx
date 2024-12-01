@@ -6,7 +6,6 @@ import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
@@ -14,8 +13,8 @@ import { API_URL } from "../config";
 import '../assets/styles/pages/dashboard.css';
 import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import PieChart from "../components/PieChart";
+import { useSelector } from "react-redux";
 
 const DashboardCard = ({ title, count, color, icon }) => (
   <Card className="dashboard-card">
@@ -33,9 +32,10 @@ const DashboardCard = ({ title, count, color, icon }) => (
 );
 
 const EnquiryRow = ({ enquiry }) => {
-  const encodedId = btoa(enquiry._id); // Base64 encode enquiry ID
+  const encodedId = btoa(enquiry._id); // Base64 to encode enquiry ID
   return (
-    <tr  key={`${enquiry.source}-${enquiry._id}`}>
+    <tr  key={`${enquiry.source}-${enquiry._id}`}> 
+    {/* I added the equiry source to the key in order to adrress a key duplicate issue react was warning me about */}
       <td>{enquiry.source || "N/A"}</td>
       <td>{enquiry.customerDetails?.name || "N/A"}</td>
       <td>{enquiry.customerDetails?.email || "N/A"}</td>
@@ -105,7 +105,6 @@ const Dashboard = () => {
   const [recentFollowUps, setRecentFollowUps] = useState([]);
   const [enqByStatus, setEnqByStatus] = useState([]);
 
-  
   const [createEnq, setCreatedEnq] = useState({
     source: '',
     description: '',
@@ -236,19 +235,16 @@ const Dashboard = () => {
     fetchData();
   }, [getAllEnq]); 
 
-  const totalEnquiries = getAllEnq.length;
-  const newEnquiries = getAllEnq.filter((enq) => enq.status === 'New').length;
-  const pendingEnquiries = getAllEnq.filter((enq) => enq.status === 'In Progress').length;
-  const closedEnquiries = getAllEnq.filter((enq) => enq.status === 'Closed').length;
-
   return (
     <div className="dashboard-container">
       {/* Dashboard Cards */}
       <div className="dashboard-cards">
-        <DashboardCard title="New Enquiries" count={newEnquiries} color="#16b6f0" icon={<LuUsers size={20} />} />
-        <DashboardCard title="Pending Enquiries" count={pendingEnquiries} color="#ffc530" icon={<LuUsers size={20} style={{ color: "#ffc530" }} />} />
-        <DashboardCard title="Closed Enquiries" count={closedEnquiries} color="#fc6565" icon={<LuUsers size={20} style={{ color: "#fc6565" }} />} />
-        <DashboardCard title="Total Enquiries" count={totalEnquiries} color="#16b6f0" icon={<LuUsers size={20} style={{ color: "#16b6f0" }} />} />
+        <DashboardCard title="New Enquiries" count={enqByStatus.New} color="#16b6f0" icon={<LuUsers size={20} />} />
+         <DashboardCard title="Pending Enquiries" count={enqByStatus["In Progress"]} color="#ffc530" icon={<LuUsers size={20} style={{ color: "#ffc530" }} />} />
+        <DashboardCard title="Closed Enquiries" count={enqByStatus.Closed} color="#fc6565" icon={<LuUsers size={20} style={{ color: "#fc6565" }} />} />
+        <DashboardCard title="Enrolled" count={enqByStatus.Enrolled} color="#16b6f0" icon={<LuUsers size={20} style={{ color: "#16b6f0" }} />} /> 
+         <DashboardCard title="Opt-Out" count={enqByStatus["Opt-Out"]} color="#ffc530" icon={<LuUsers size={20} style={{ color: "#ffc530" }} />} /> 
+
       </div>
 
       {/* Recent Enquiries Table */}

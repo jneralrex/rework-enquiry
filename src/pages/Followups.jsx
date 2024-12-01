@@ -4,6 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import '../assets/styles/pages/followup.css'
 import axios from "axios";
 import { API_URL } from "../config";
+import { Link } from "react-router-dom";
 
 const Followups = () => {
   const [getAllFollow, setAllFollow] = useState([]);
@@ -63,14 +64,18 @@ const Followups = () => {
                   <td>{followDetails?.currentStaff?.name || 'N/A'}</td>
                   <td>{new Date(followDetails?.enquiry?.createdAt).toLocaleString()}</td>
                   <td>
-                    <Dropdown className="table-drop-down">
-                      <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                        View
-                      </Dropdown.Toggle>
+                  <Dropdown className="table-drop-down">
+                      <Dropdown.Toggle
+                        variant="success"
+                        id="dropdown-basic"
+                        className="table-drop-down-title"
+                      ></Dropdown.Toggle>
                       <Dropdown.Menu className="drop-down-menu">
-                        <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Action 2</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Action 3</Dropdown.Item>
+                        <Link className='dash-link' to={`/dashboard/enquiries/${btoa(followDetails._id)}`}>
+                          <Dropdown.Item href="#/action">
+                            View more
+                          </Dropdown.Item>
+                        </Link>
                       </Dropdown.Menu>
                     </Dropdown>
                   </td>

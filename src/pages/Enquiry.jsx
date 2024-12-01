@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Card from "react-bootstrap/Card";
@@ -9,7 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../config";
 
@@ -23,13 +23,8 @@ const Enquiry = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [getAllStaff, setAllStaff] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-
-  // Slicing data for pagination
-  const indexOfLastEnquiry = currentPage * itemsPerPage;
-  const indexOfFirstEnquiry = indexOfLastEnquiry - itemsPerPage;
-  const currentEnquiries = getAllEnq.slice(indexOfFirstEnquiry, indexOfLastEnquiry);
+  const [enqError, setEnqError] = useState([]);
+  const [enqByStatus, setEnqByStatus] = useState([]);
 
   const getAllEnquiries = async () => {
     const res = await axios.get(`${API_URL}/user/enquiries`, {
@@ -139,17 +134,63 @@ const Enquiry = () => {
     }
   };
 
+  const handleExportToCSV = () => {
+    if (getAllEnq.length === 0) {
+      alert("No enquiries available to export.");
+      return;
+    }
+
+    // Convert data to CSV format
+    const headers = ["Source", "Description", "Status", "Follow-Up Actions", "Assigned Staff", "Created At"];
+    const rows = getAllEnq.map((enq) => [
+      enq.source || "N/A",
+      enq.description || "N/A",
+      enq.status || "N/A",
+      (Array.isArray(enq.followUpActions) ? enq.followUpActions.join(", ") : "N/A"),
+      enq.assignedStaff?.name || "N/A",
+      new Date(enq.createdAt).toLocaleString() || "N/A",
+    ]);
+
+    const csvContent = [headers, ...rows].map((row) => row.join(",")).join("\n");
+
+    // Create a downloadable CSV file
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    // Trigger download
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "enquiries.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   useEffect(() => {
     getAllEnquiries();
     getAllStaffDetails();
   }, []);
 
-  const totalEnquiries = getAllEnq.length;
-  const newEnquiries = getAllEnq.filter(enq => enq.status === 'New').length;
-  const pendingEnquiries = getAllEnq.filter(enq => enq.status === 'In Progress').length;
-  const closedEnquiries = getAllEnq.filter(enq => enq.status === 'Closed').length;
-  const optOut = getAllEnq.filter(enq => enq.status === 'Opt-Out').length;
-  const enrolled = getAllEnq.filter(enq => enq.status === 'Enrolled').length;
+
+  useEffect(() => {
+
+    const getEnqByStatus = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/user/enquiries-by-status`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.data.success) {
+          setEnqByStatus(res.data.data);
+        }
+      } catch (err) {
+        setEnqError(err.response?.data?.message || "");
+      }
+    };
+    getEnqByStatus();
+  }, [token]);
 
   return (
     <div className="con">
@@ -159,31 +200,31 @@ const Enquiry = () => {
           <Card.Body className="card-body">
             <div className="card-title">New</div>
           </Card.Body>
-          <p className="card-number">{newEnquiries}</p>
+          <p className="card-number">{enqByStatus.New}</p>
         </Card>
         <Card className="custom-card">
           <Card.Body className="card-body">
             <div className="card-title">In-progress</div>
           </Card.Body>
-          <p className="card-number">{pendingEnquiries}</p>
+          <p className="card-number">{enqByStatus["In Progress"]}</p>
         </Card>
         <Card className="custom-card">
           <Card.Body className="card-body">
             <div className="card-title">Enrolled</div>
           </Card.Body>
-          <p className="card-number">{enrolled}</p>
+          <p className="card-number">{enqByStatus.Enrolled}</p>
         </Card>
         <Card className="custom-card">
           <Card.Body className="card-body">
             <div className="card-title">Opt-out</div>
           </Card.Body>
-          <p className="card-number">{optOut}</p>
+          <p className="card-number">{enqByStatus["Opt-Out"]}</p>
         </Card>
         <Card className="custom-card">
           <Card.Body className="card-body">
             <div className="card-title">Closed</div>
           </Card.Body>
-          <p className="card-number">{closedEnquiries}</p>
+          <p className="card-number">{enqByStatus.Closed}</p>
         </Card>
       </div>
       <div className="button-group">
@@ -195,10 +236,11 @@ const Enquiry = () => {
           <FiFilter size={20} />
           <div>Filter</div>
         </div>
-        <div className="custom-button">
+        <div className="custom-button" onClick={handleExportToCSV}>
           <CiExport size={20} />
           <div>Export</div>
         </div>
+
       </div>
 
       {/* Table with manual pagination */}
@@ -216,12 +258,12 @@ const Enquiry = () => {
             </tr>
           </thead>
           <tbody>
-            {currentEnquiries.length === 0 ? (
+            {getAllEnq.length === 0 ? (
               <tr>
                 <td colSpan="7">No enquiries available.</td>
               </tr>
             ) : (
-              currentEnquiries.map((enqDetails) => (
+              getAllEnq.map((enqDetails) => (
                 <tr key={enqDetails._id}>
                   <td>{enqDetails?.source}</td>
                   <td>{enqDetails?.description || 'N/A'}</td>
@@ -231,11 +273,17 @@ const Enquiry = () => {
                   <td>{new Date(enqDetails?.createdAt).toLocaleString() || 'N/A'}</td>
                   <td>
                     <Dropdown className="table-drop-down">
-                      <Dropdown.Toggle variant="success" id="dropdown-basic" className="table-drop-down-title">
-                        view
-                      </Dropdown.Toggle>
+                      <Dropdown.Toggle
+                        variant="success"
+                        id="dropdown-basic"
+                        className="table-drop-down-title"
+                      ></Dropdown.Toggle>
                       <Dropdown.Menu className="drop-down-menu">
-                        <Dropdown.Item href="#/action-1">View all enquiries</Dropdown.Item>
+                        <Link className='dash-link' to={`/dashboard/enquiries/${btoa(enqDetails._id)}`}>
+                          <Dropdown.Item href="#/action">
+                            View more
+                          </Dropdown.Item>
+                        </Link>
                       </Dropdown.Menu>
                     </Dropdown>
                   </td>
@@ -244,21 +292,6 @@ const Enquiry = () => {
             )}
           </tbody>
         </Table>
-      </div>
-
-      {/* Pagination Controls */}
-      <div className="pagination-controls">
-        <div className="prev-page-pointer" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}>
-          <FiArrowLeft />
-          <div>Previous</div>
-        </div>
-        <div className="page-numbers">
-          Page {currentPage} of {Math.ceil(totalEnquiries / itemsPerPage)}
-        </div>
-        <div className="next-page-pointer" onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(totalEnquiries / itemsPerPage)))}>
-          <div>Next</div>
-          <FiArrowRight />
-        </div>
       </div>
 
       {/* Modal for creating enquiry */}

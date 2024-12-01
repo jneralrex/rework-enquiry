@@ -5,18 +5,17 @@ import Form from 'react-bootstrap/Form';
 import { Link, useParams } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { SlOptionsVertical } from "react-icons/sl";
 // import ProgressBar from 'react-bootstrap/ProgressBar';
 import axios from 'axios';
 import { API_URL } from '../config';
 import { Spinner } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 const EnquiryDetails = () => {
   const { encodedId } = useParams();
   const realId = atob(encodedId);
-  const now = 60;
   const token = sessionStorage.getItem('authToken');
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
@@ -27,7 +26,11 @@ const EnquiryDetails = () => {
   const [getEnqById, setGetEnqById] = useState(null);
   const [error, setError] = useState('');
   const [getAllStaff, setAllStaff] = useState([]);
+  const [allFollowUpById, setAllFollowUpById] = useState([]);
+
   const [deleteEnq, setDeleteEnq] = useState({ id: realId })
+  const userID = useSelector((state) => state.user?.user?.user?._id);
+  
 
   //I am splitting slash / from the current date and I am replacing it with dash - :
   const formatDateWithDashes = (date = new Date()) => {
@@ -41,7 +44,7 @@ const EnquiryDetails = () => {
     enquiry: realId,
     date: formattedDateWithDashes,
     actionTaken: '',
-    currentStaff: ''
+    currentStaff: userID
   });
 
   const handleClose = () => setShow(false);
@@ -115,6 +118,18 @@ const EnquiryDetails = () => {
     }
   };
 
+  const getAllFollowUpById = async () => {
+    const res = await axios.get(`${API_URL}/user/follow-up-actions/enquiry/${realId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (Array.isArray(res.data.data)) {
+      setAllFollowUpById(res.data.data);
+    }
+  };
+
   const handleStatusChange = (e) => {
     const { value } = e.target;
     setCreatedEnq((prev) => ({
@@ -150,10 +165,6 @@ const EnquiryDetails = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setGetEnqById(res.data.data);
-      setFollowUpMessage(prevState => ({
-        ...prevState,
-        currentStaff: res.data.data.assignedStaff?._id || ''
-      }));
     } catch (error) {
       console.error("Error fetching enquiry details:", error);
     }
@@ -163,9 +174,8 @@ const EnquiryDetails = () => {
     const { name, value } = e.target;
     setFollowUpMessage((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value || ''  // Ensure that value is a string (fallback to empty string if null or undefined)
     }));
-
   };
 
   const createFollowUpMessage = async () => {
@@ -173,12 +183,14 @@ const EnquiryDetails = () => {
       const res = await axios.post(`${API_URL}/user/follow-up-actions`, followUpMessage, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setFollowUpMessage(res.data);
-      // Optional: Reset form fields or show success message
-      setFollowUpMessage('')
+      setFollowUpMessage({
+        enquiry: realId,
+        date: formattedDateWithDashes,
+        actionTaken: '',  // Reset to an empty string
+        currentStaff: userID
+      });  // Reset state correctly to the initial structure
     } catch (error) {
       console.error("Error creating follow-up message:", error);
-      // Optional: Set an error state to display a user-friendly message
     }
   };
 
@@ -196,7 +208,7 @@ const EnquiryDetails = () => {
       handleDeleteClose()
     } catch (error) {
       setError(error)
-      alert('Error deleting enquiry: ' + error.message); // Provide feedback in case of error
+      alert('Error deleting enquiry: ' + error.message);
 
     }
   };
@@ -208,16 +220,18 @@ const EnquiryDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await Promise.all([getAllStaffDetails()]);
+      await Promise.all([getAllStaffDetails(), getAllFollowUpById()]);
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [followUpMessage]);
 
   if (!getEnqById) {
     return <Spinner animation="border" variant="primary" />;
   }
 
+  console.log("follow",allFollowUpById)
+  console.log(followUpMessage)
 
   return (
     <div className="enquiry-container">
@@ -299,8 +313,15 @@ const EnquiryDetails = () => {
       <div className='form-area'>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
-            <Form.Control type="text" placeholder="message..." className='input' name='actionTaken' value={followUpMessage.actionTaken} onChange={handleInputFollowUpChange} />
-            <Button variant="primary" type="submit" className='follow-up-btn'>
+            <Form.Control
+              type="text"
+              placeholder="message..."
+              className="input"
+              name="actionTaken"
+              value={followUpMessage.actionTaken || ''}  // Ensure value is a string
+              onChange={handleInputFollowUpChange}
+            />
+            <Button variant="primary" type="submit" className="follow-up-btn">
               Send
             </Button>
           </Form.Group>
@@ -308,45 +329,34 @@ const EnquiryDetails = () => {
       </div>
       <div className='progress-and-message'>
         <ListGroup>
-          <div className='item-div'>
-            <ListGroup.Item className='list-item'>
-              <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.' />
-              <div className='middle'>
-                <div className='list-item-name'>Diana Floss - Admin</div>
-                <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
-              </div>
-              <div>
-                <div className='list-item-date'>23-09-2024</div>
-                <div className='time'>04:09 PM</div>
-              </div>
-            </ListGroup.Item>
+
+        {allFollowUpById && allFollowUpById.length > 0 ? (
+  allFollowUpById.map((followUp) => (
+    <div className='item-div' key={followUp._id}> {/* Add unique key */}
+      <ListGroup.Item className='list-item'>
+        <img 
+          className='list-items-img' 
+          src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.' 
+          alt="Staff Profile" 
+        />
+        <div className='middle'>
+          <div className='list-item-name'>
+            {followUp?.currentStaff?.name} - {followUp?.currentStaff?.role.name}
           </div>
-          <div className='item-div'>
-            <ListGroup.Item className='list-item'>
-              <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.' />
-              <div className='middle'>
-                <div className='list-item-name'>Diana Floss - Admin</div>
-                <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
-              </div>
-              <div>
-                <div className='list-item-date'>23-09-2024</div>
-                <div className='time'>04:09 PM</div>
-              </div>
-            </ListGroup.Item>
+          <div className='list-item-msg'>{followUp?.actionTaken}</div>
+        </div>
+        <div>
+          <div className='list-item-date'>
+            {followUp?.date ? new Date(followUp?.date).toLocaleDateString('en-GB') : 'No Date Available'}
           </div>
-          <div className='item-div'>
-            <ListGroup.Item className='list-item'>
-              <img className='list-items-img' src='https://images.pexels.com/photos/28570315/pexels-photo-28570315.jpeg?cs=srgb&dl=pexels-lvu-image-1599405908-28570315.jpg&fm=jpg&_gl=1*1fupe55*_ga*MTA3MjkwNDE2My4xNzA5OTEwNjE3*_ga_8JE65Q40S6*MTcyODg0MjcxMS4xNS4xLjE3Mjg4NDMxNTYuMC4wLjA.' />
-              <div className='middle'>
-                <div className='list-item-name'>Diana Floss - Admin</div>
-                <div className='list-item-msg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus unde fugiat delectus doloremque error!</div>
-              </div>
-              <div>
-                <div className='list-item-date'>23-09-2024</div>
-                <div className='time'>04:09 PM</div>
-              </div>
-            </ListGroup.Item>
-          </div>
+        </div>
+      </ListGroup.Item>
+    </div>
+  ))
+) : (
+  <div>No Follow Up Action yet</div>
+)}
+
         </ListGroup>
 
         <div className="tracking">

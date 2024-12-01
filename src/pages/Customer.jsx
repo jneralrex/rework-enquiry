@@ -1,104 +1,80 @@
-import React, { useState } from 'react'
-import { FiBell, FiArrowRight, FiSearch, } from 'react-icons/fi'
-import { LuUsers } from 'react-icons/lu';
-import Table from 'react-bootstrap/Table';
-import Form from 'react-bootstrap/Form';
-import '../assets/styles/pages/customer.css'
+import React, { useEffect, useState } from "react";
+import { LuUsers } from "react-icons/lu";
+import Table from "react-bootstrap/Table";
+import "../assets/styles/pages/customer.css";
+import { API_URL } from "../config";
+import axios from "axios";
 
 const Customer = () => {
-  const studentsData = Array(50).fill(null).map((_, idx) => ({
-    name: "Adndew Jones",
-    email: "idahrex@gmail.com",
-    phone: "08175225016",
-    address: "masaka, masaka",
-    session: "2021/2022",
-    interestedCourse: "Data Anaysis",
-    marketingSource: "",
-  }));
+  const [getAllEnq, setAllEnq] = useState([]);
+  const token = sessionStorage.getItem("authToken");
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const getAllEnquiries = async () => {
+    const res = await axios.get(`${API_URL}/user/enquiries`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  // Slicing data for pagination
-  const displayedData = studentsData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+    if (Array.isArray(res.data.data)) {
+      setAllEnq(res.data.data);
+    }
+  };
 
-
-  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  useEffect(() => {
+    getAllEnquiries();
+  }, []);
 
   return (
     <div className="followup-container">
-     
-      <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', paddingRight: '5px', marginBottom: '20px' }}>
-        <div>All (100)</div>
-       
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "space-between",
+          paddingRight: "5px",
+          marginBottom: "20px",
+        }}
+      >
+        <div>All {getAllEnq.length}</div>
       </div>
-      <div className='table-container'>
-      <Table className="table">
-        <thead style={{ border: '1px solid black', borderRadius: '5px 0px 5px 0px' }}>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Sessions</th>
-            <th>Interested courses</th>
-            <th>Marketing source</th>
-          </tr>
-        </thead>
-        <tbody>
-          {displayedData.map((student, idx) => (
-            <tr key={idx}>
-              <td style={{ display: 'flex ', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}> <Form>
-                {['checkbox',].map((type) => (
-                  <div key={`inline-${type}`} className="mb-3">
-                    <Form.Check
-                      inline
-                      name="group1"
-                      type={type}
-                      id={`inline-${type}-1`}
-                    />
-
-                  </div>
-                ))}
-              </Form>{student.name}</td>
-              <td>{student.email}</td>
-              <td>{student.phone}</td>
-              <td>{student.address}</td>
-              <td>{student.session}</td>
-              <td>{student.interestedCourse}</td>
-              <td>{student.marketingSource}</td>
-              <td>
-
-              </td>
+      <div className="table-container">
+        <Table className="table">
+          <thead
+            style={{
+              border: "1px solid black",
+              borderRadius: "5px 0px 5px 0px",
+            }}
+          >
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Address</th>
+              <th>Sessions</th>
+              <th>Interested courses</th>
+              <th>Marketing source</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-      </div>
-
-      {/* Pagination Controls */}
-      <div className="pagination-controls">
-        <div className="next-page-pointer">
-          <div>Next</div>
-          <div><FiArrowRight /></div>
-        </div>
-        <div>
-          {Array(Math.ceil(studentsData.length / itemsPerPage)).fill(null).map((_, idx) => (
-            <button
-              key={idx}
-              className={`page-button ${currentPage === idx + 1 ? 'active' : ''}`}
-              onClick={() => handlePageChange(idx + 1)}
-            >
-              {idx + 1}
-            </button>
-          ))}
-        </div>
+          </thead>
+          <tbody>
+            {getAllEnq.map((student, index) => (
+              <tr key={`${student?.customerDetails?.name}-${index}`}>
+                <td >
+                  {student?.customerDetails?.name}
+                </td>
+                <td>{student?.customerDetails.email}</td>
+                <td>{student?.customerDetails?.phone}</td>
+                <td>{student?.customerDetails?.address}</td>
+                <td>{student?.customerDetails?.session}</td>
+                <td>{student?.customerDetails?.course}</td>
+                <td>{student?.source}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Customer
+export default Customer;

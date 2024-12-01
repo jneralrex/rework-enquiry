@@ -3,11 +3,16 @@ import { FiHome, FiBook, FiBell } from 'react-icons/fi';
 import { LuLogOut, LuUsers } from 'react-icons/lu';
 import { RiCustomerService2Fill } from 'react-icons/ri';
 import { HiOutlineShoppingBag } from "react-icons/hi2";
-import { TbReportSearch } from "react-icons/tb";
 import { BiUserCheck } from "react-icons/bi";
 import '../assets/styles/components/drawer.css';
+import { logout } from '../redux/user/UserSlice';
+import LogoutButton from './LogoutButton';
 
 const MyNav = ({ handleClose }) => {
+  const logOutUser = () => {
+    sessionStorage.removeItem("authToken");
+    dispatch(logout()); 
+  };
   return (
     <>
       <NavLink
@@ -60,13 +65,11 @@ const MyNav = ({ handleClose }) => {
       >
         <BiUserCheck /> Change password
       </NavLink>
-      <NavLink
-        to='/dashboard/logout'
-        className={({ isActive }) => (isActive ? "link active-link" : "link")}
-        onClick={handleClose}
+      <div
+        style={{cursor:'pointer'}}
       >
-        <LuLogOut style={{ color: "red" }} /> Log out
-      </NavLink>
+        <div className='logOut'><LuLogOut className="logout-icon"  /> <LogoutButton/></div>
+        </div>
     </>
   );
 };
