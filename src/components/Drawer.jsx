@@ -59,7 +59,7 @@ const Drawer = () => {
           )}
           <div className='dash-title'>Dashboard</div>
           <div className="dropdown-main">
-              <div className="dropbtn-notification"> <FaBell size={30} style={{ color: 'black' }} /></div>
+              <div className="dropbtn-notification"> <FaBell size={28} style={{ color: 'black' }} /></div>
               <div className="dropdown-content">
                 {/* <div>notification 1</div>
                 <div>notification 1</div>
@@ -70,7 +70,7 @@ const Drawer = () => {
               </div>
             </div>
             <div className="dropdown-main">
-              <div className="dropbtn"> <FaUserCircle size={30} style={{ color: 'black' }} /></div>
+              <div className="dropbtn"> <FaUserCircle size={28} style={{ color: 'black' }} /></div>
               <div className="dropdown-content">
                 <div><LogoutButton/></div>
                 <div>Forgot password</div>

@@ -185,10 +185,6 @@
   text-align: center;
 }
 
-/* .status-bar{
-  max-width: 100% !important;
-} */
-
 .tracking {
   display: flex;
   flex-direction: column;
@@ -305,14 +301,6 @@
   border-radius: 10px !important;
 }
 
-.list-items-img {
-  border: 1px solid;
-  border-radius: 100%;
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-}
-
 .list-item-name {
   font-weight: 700;
 }
@@ -321,6 +309,14 @@
   display: flex;
   flex-direction: column;
   margin-left: 3px;
+  
+}
+
+.middle-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
 }
 
 .list-item-msg {
@@ -358,8 +354,8 @@
   .progress-and-message {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
+    width: 100%;
   }
 
   .message-box {
@@ -373,8 +369,9 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-    justify-content: space-between;
-    gap: 50px;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
   }
 
   .details {
@@ -398,7 +395,14 @@
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 20px;
-    text-align: start;
+    text-align: center;
+  }
+
+  .staff-header, .customer-header{
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: center;
   }
 
   .dropdown-enq {
@@ -408,11 +412,11 @@
   }
 
   .staff {
-    max-width: 400px;
+    max-width: 350px;
   }
-
+  
   .customer {
-    max-width: 450px;
+    max-width: 350px;
     margin-left: 0px;
   }
 
@@ -428,14 +432,6 @@
     justify-content: center;
     gap: 2px;
     margin-top: 5px;
-  }
-
-  .list-items-img {
-    border: 1px solid;
-    border-radius: 50%;
-    width: 70px;
-    height: 50px;
-    object-fit: cover;
   }
 
   .list-item {
