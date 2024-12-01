@@ -73,7 +73,7 @@ const Login = () => {
                         }}
                     >
                         <img src={logo} alt="Rework logo" style={{ marginBottom: "15px" }} />
-                        <h2>ADMIN LOGIN</h2>
+                        <h2>REWORK ERMS</h2>
                         <p>Enter your email and password</p>
                     </div>
                     <div style={{ margin: "50px" }}>
